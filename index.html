@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Campus 360 is a modern student-facing campus hub for events, announcements, map, library, canteen, clubs, and campus services."
+    />
+    <title>Campus 360 | Everything Campus. One Place.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <nav class="nav container" aria-label="Main navigation">
+          <div class="nav-left">
+            <a href="#home" class="brand" aria-label="Campus 360 home">
+              <span class="brand-mark">C</span>
+              <div>
+                <strong>Campus 360</strong>
+              </div>
+            </a>
+          </div>
+
+          <div class="nav-center">
+            <a href="#home">Home</a>
+            <a href="#explore">Explore</a>
+            <a href="#events-section">Events</a>
+            <a href="#announcements-section">Announcements</a>
+            <a href="#map-section">Campus Map</a>
+            <a href="#canteen-section">Canteen</a>
+            <a href="#library-section">Library</a>
+            <a href="#more">More</a>
+          </div>
+
+          <div class="nav-right">
+            <button class="icon-btn search-trigger" aria-label="Open search">⌕</button>
+            <button class="icon-btn notification-trigger" aria-label="Open notifications">
+              🔔
+              <span class="badge" id="notification-badge">3</span>
+            </button>
+            <button class="icon-btn theme-toggle" aria-label="Toggle dark mode">☀️</button>
+            <button class="profile-pill" id="profile-button" aria-label="Open profile dashboard">
+              <span class="avatar">AS</span>
+              <span>Alex</span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero container" id="home">
+          <div class="hero-copy">
+            <span class="eyebrow">Digital campus ecosystem</span>
+            <h1>Campus 360</h1>
+            <p class="tagline">Everything Campus. One Place.</p>
+            <p class="hero-text">
+              Your digital gateway to campus life — discover events, announcements,
+              facilities, services, resources and everything happening around your college.
+            </p>
+            <div class="hero-actions">
+              <a href="#explore" class="btn btn-primary">Explore Campus</a>
+              <a href="#events-section" class="btn btn-secondary">View Events</a>
+            </div>
+            <div class="global-search-box">
+              <span>🔎</span>
+              <input type="text" id="hero-search" placeholder="Search campus, events, books, clubs..." aria-label="Search campus" />
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-label="Campus connectivity illustration">
+            <div class="campus-visual">
+              <div class="center-node">Campus 360</div>
+              <span class="node node-1">Events</span>
+              <span class="node node-2">Library</span>
+              <span class="node node-3">Canteen</span>
+              <span class="node node-4">Map</span>
+              <span class="node node-5">Clubs</span>
+              <span class="node node-6">News</span>
+              <span class="node node-7">Students</span>
+              <span class="node node-8">Facilities</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-actions container" id="explore">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Quick Access</span>
+              <h2>Quick Actions</h2>
+            </div>
+          </div>
+          <div class="quick-grid" id="quick-grid">
+            <button class="quick-card" data-target="#map-section"><span>🗺</span> Campus Map</button>
+            <button class="quick-card" data-target="#announcements-section"><span>📢</span> Announcements</button>
+            <button class="quick-card" data-target="#events-section"><span>🎉</span> Events</button>
+            <button class="quick-card" data-target="#canteen-section"><span>🍴</span> Canteen</button>
+            <button class="quick-card" data-target="#library-section"><span>📚</span> Library</button>
+            <button class="quick-card" data-target="#lost-found-section"><span>🔎</span> Lost & Found</button>
+            <button class="quick-card" data-target="#report-issue"><span>🚨</span> Report Issue</button>
+            <button class="quick-card" data-target="#feedback-section"><span>💬</span> Feedback</button>
+            <button class="quick-card" data-target="#departments-section"><span>🏫</span> Departments</button>
+            <button class="quick-card" data-target="#clubs-section"><span>👥</span> Clubs</button>
+            <button class="quick-card" data-target="#news-section"><span>📰</span> Campus News</button>
+            <button class="quick-card" data-target="#calendar-section"><span>📅</span> Academic Calendar</button>
+          </div>
+        </section>
+
+        <section class="stats container" id="stats-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">At a glance</span>
+              <h2>Campus at a Glance</h2>
+            </div>
+          </div>
+          <div class="stats-grid" id="stats-grid"></div>
+        </section>
+
+        <section class="container today-section" id="today-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">What is happening today</span>
+              <h2>Today on Campus</h2>
+            </div>
+          </div>
+          <div id="today-list" class="timeline-list"></div>
+        </section>
+
+        <section class="container module-section" id="events-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Campus calendar</span>
+              <h2>Upcoming Events</h2>
+            </div>
+            <div class="filter-row" id="event-filters"></div>
+          </div>
+          <div id="events-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="announcements-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Updates</span>
+              <h2>Announcements</h2>
+            </div>
+            <div class="filter-row" id="announcement-filters"></div>
+          </div>
+          <div id="announcements-list" class="stack-list"></div>
+        </section>
+
+        <section class="container module-section" id="news-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Campus coverage</span>
+              <h2>Campus News</h2>
+            </div>
+          </div>
+          <div id="news-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="canteen-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Campus dining</span>
+              <h2>What's cooking today?</h2>
+            </div>
+          </div>
+          <div id="canteen-menu" class="canteen-layout"></div>
+        </section>
+
+        <section class="container module-section" id="library-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Knowledge hub</span>
+              <h2>Campus Library</h2>
+            </div>
+            <div class="filter-row" id="library-filters"></div>
+          </div>
+          <div id="library-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="map-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Navigation</span>
+              <h2>Interactive Campus Map</h2>
+            </div>
+          </div>
+          <div class="map-shell">
+            <div class="map-controls">
+              <label>
+                From
+                <select id="map-from"></select>
+              </label>
+              <label>
+                To
+                <select id="map-to"></select>
+              </label>
+              <button class="btn btn-primary" id="show-route-btn">Show Route</button>
+            </div>
+            <div class="campus-map-wrap">
+              <div id="campus-map" class="campus-map" aria-label="Campus map"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="container module-section" id="lost-found-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Community help</span>
+              <h2>Lost & Found</h2>
+            </div>
+          </div>
+          <div class="two-col panel-grid">
+            <div class="panel-card">
+              <h3>I Lost Something</h3>
+              <form id="lost-form" class="stack-form">
+                <label>
+                  Item Name
+                  <input type="text" name="itemName" required />
+                </label>
+                <label>
+                  Category
+                  <select name="category">
+                    <option>ID Card</option>
+                    <option>Wallet</option>
+                    <option>Phone</option>
+                    <option>Laptop</option>
+                    <option>Charger</option>
+                    <option>Keys</option>
+                    <option>Books</option>
+                    <option>Accessories</option>
+                    <option>Clothing</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  Last Seen Location
+                  <input type="text" name="location" required />
+                </label>
+                <label>
+                  Description
+                  <textarea name="description" rows="3" required></textarea>
+                </label>
+                <label>
+                  Contact Method
+                  <input type="text" name="contact" required />
+                </label>
+                <button class="btn btn-primary" type="submit">Report Lost Item</button>
+              </form>
+            </div>
+
+            <div class="panel-card">
+              <h3>I Found Something</h3>
+              <form id="found-form" class="stack-form">
+                <label>
+                  Item Name
+                  <input type="text" name="itemName" required />
+                </label>
+                <label>
+                  Category
+                  <select name="category">
+                    <option>ID Card</option>
+                    <option>Wallet</option>
+                    <option>Phone</option>
+                    <option>Laptop</option>
+                    <option>Charger</option>
+                    <option>Keys</option>
+                    <option>Books</option>
+                    <option>Accessories</option>
+                    <option>Clothing</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  Found At
+                  <input type="text" name="location" required />
+                </label>
+                <label>
+                  Description
+                  <textarea name="description" rows="3" required></textarea>
+                </label>
+                <label>
+                  Contact Method
+                  <input type="text" name="contact" required />
+                </label>
+                <button class="btn btn-primary" type="submit">Report Found Item</button>
+              </form>
+            </div>
+          </div>
+          <div id="lost-found-list" class="card-grid mt-24"></div>
+        </section>
+
+        <section class="container module-section" id="clubs-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Student communities</span>
+              <h2>Clubs & Student Communities</h2>
+            </div>
+          </div>
+          <div id="clubs-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="departments-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Academic units</span>
+              <h2>Departments</h2>
+            </div>
+          </div>
+          <div id="departments-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="facilities-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Resources</span>
+              <h2>Campus Facilities</h2>
+            </div>
+          </div>
+          <div id="facilities-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="calendar-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Academic schedule</span>
+              <h2>Academic Calendar</h2>
+            </div>
+          </div>
+          <div id="calendar-root" class="calendar-card"></div>
+        </section>
+
+        <section class="container module-section" id="report-issue">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Campus support</span>
+              <h2>Report an Issue</h2>
+            </div>
+          </div>
+          <div class="panel-card issue-form-wrap">
+            <form id="issue-form" class="stack-form">
+              <div class="two-col">
+                <label>
+                  Issue Category
+                  <select name="category" required>
+                    <option>Broken equipment</option>
+                    <option>Classroom issue</option>
+                    <option>Electrical issue</option>
+                    <option>Water issue</option>
+                    <option>Cleanliness</option>
+                    <option>Internet/Wi-Fi</option>
+                    <option>Safety concern</option>
+                    <option>Canteen issue</option>
+                    <option>Library issue</option>
+                    <option>Infrastructure</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  Location
+                  <input type="text" name="location" placeholder="e.g. Block B, Room 214" required />
+                </label>
+              </div>
+              <label>
+                Description
+                <textarea name="description" rows="4" required></textarea>
+              </label>
+              <div class="two-col">
+                <label>
+                  Urgency
+                  <select name="urgency">
+                    <option>Low</option>
+                    <option selected>Medium</option>
+                    <option>High</option>
+                  </select>
+                </label>
+                <label>
+                  Contact Info
+                  <input type="text" name="contact" required />
+                </label>
+              </div>
+              <button class="btn btn-primary" type="submit">Submit Report</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="container module-section" id="feedback-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Your voice</span>
+              <h2>Feedback Center</h2>
+            </div>
+          </div>
+          <div class="panel-card feedback-wrap">
+            <form id="feedback-form" class="stack-form">
+              <div class="two-col">
+                <label>
+                  Category
+                  <select name="category">
+                    <option>Academics</option>
+                    <option>Faculty</option>
+                    <option>Canteen</option>
+                    <option>Library</option>
+                    <option>Infrastructure</option>
+                    <option>Events</option>
+                    <option>Clubs</option>
+                    <option>Campus Facilities</option>
+                    <option>Website</option>
+                    <option>General</option>
+                  </select>
+                </label>
+                <label>
+                  Rating
+                  <select name="rating">
+                    <option>5 - Excellent</option>
+                    <option>4 - Good</option>
+                    <option>3 - Average</option>
+                    <option>2 - Fair</option>
+                    <option>1 - Poor</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Feedback
+                <textarea name="text" rows="4" required></textarea>
+              </label>
+              <label class="check-row">
+                <input type="checkbox" name="anonymous" />
+                Submit anonymously
+              </label>
+              <button class="btn btn-primary" type="submit">Submit Feedback</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="container module-section" id="blogs-section">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Community voices</span>
+              <h2>Campus Blogs</h2>
+            </div>
+            <button class="btn btn-secondary" id="write-blog-btn">Write a Blog</button>
+          </div>
+          <div id="blogs-list" class="card-grid"></div>
+        </section>
+
+        <section class="container module-section" id="official-section">
+          <div class="official-panel">
+            <div>
+              <span class="eyebrow">Official information</span>
+              <h2>Official APSIT</h2>
+              <p>
+                Campus 360 complements the official college website rather than replacing it.
+                Use this section to reach verified information hosted on the official APSIT website.
+              </p>
+            </div>
+            <a class="btn btn-primary" href="https://www.apsit.edu.in/" target="_blank" rel="noreferrer">Visit Official APSIT Website</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer container">
+        <div class="footer-grid">
+          <div>
+            <h3>Campus 360</h3>
+            <p>Everything Campus. One Place.</p>
+          </div>
+          <div>
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="#events-section">Events</a></li>
+              <li><a href="#announcements-section">Announcements</a></li>
+              <li><a href="#news-section">News</a></li>
+              <li><a href="#blogs-section">Blogs</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Campus</h4>
+            <ul>
+              <li><a href="#map-section">Map</a></li>
+              <li><a href="#library-section">Library</a></li>
+              <li><a href="#canteen-section">Canteen</a></li>
+              <li><a href="#facilities-section">Facilities</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#lost-found-section">Lost & Found</a></li>
+              <li><a href="#report-issue">Report Issue</a></li>
+              <li><a href="#feedback-section">Feedback</a></li>
+              <li><a href="#">Campus Help</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Official</h4>
+            <ul>
+              <li><a href="https://www.apsit.edu.in/" target="_blank" rel="noreferrer">APSIT Website</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Campus 360</span>
+          <span>Frontend academic demo project for campus ecosystem concepting.</span>
+        </div>
+      </footer>
+    </div>
+
+    <div class="modal" id="generic-modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close="modal"></div>
+      <div class="modal-panel" role="dialog" aria-modal="true">
+        <button class="modal-close" aria-label="Close dialog">×</button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+
+    <div class="notification-panel" id="notification-panel" aria-hidden="true">
+      <div class="panel-head">
+        <h3>Notifications</h3>
+        <button class="link-btn" id="mark-all-read">Mark all as read</button>
+      </div>
+      <div id="notification-list"></div>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" aria-hidden="true">
+      <div class="search-modal">
+        <div class="search-header">
+          <h3>Search Campus 360</h3>
+          <button class="modal-close search-close" aria-label="Close search">×</button>
+        </div>
+        <div class="search-input-wrap">
+          <span>⌕</span>
+          <input id="search-input" type="text" placeholder="Search announcements, events, books, clubs, locations..." />
+        </div>
+        <div class="search-suggestions" id="search-suggestions"></div>
+        <div id="search-results" class="search-results"></div>
+      </div>
+    </div>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/announcements.js"></script>
+    <script src="js/news.js"></script>
+    <script src="js/blogs.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/canteen.js"></script>
+    <script src="js/library.js"></script>
+    <script src="js/lost-found.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/clubs.js"></script>
+    <script src="js/departments.js"></script>
+    <script src="js/facilities.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

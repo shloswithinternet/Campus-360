@@ -1,0 +1,79 @@
+@media (max-width: 768px) {
+  .nav {
+    min-height: 68px;
+    padding: 12px 0;
+  }
+
+  .nav-right {
+    gap: 6px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero {
+    padding-top: 26px;
+  }
+
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+
+  .tagline {
+    font-size: 1.15rem;
+  }
+
+  .section-head.with-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-overlay,
+  .notification-panel {
+    top: 72px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .modal-panel {
+    margin-top: 10vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(100% - 22px, 1200px);
+  }
+
+  .nav-left {
+    flex: 1;
+  }
+
+  .nav-right {
+    margin-left: auto;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .global-search-box,
+  .map-controls,
+  .search-input-wrap {
+    width: 100%;
+  }
+
+  .calendar-day {
+    min-height: 62px;
+  }
+
+  .modal-panel {
+    padding: 18px 14px 20px;
+  }
+}
