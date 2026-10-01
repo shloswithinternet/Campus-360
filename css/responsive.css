@@ -1,3 +1,15 @@
+@media (max-width: 1024px) {
+  .nav-center {
+    display: none;
+  }
+
+  .more-menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .nav {
     min-height: 68px;
@@ -8,7 +20,8 @@
     gap: 6px;
   }
 
-  .icon-btn {
+  .icon-btn,
+  .more-menu-trigger {
     width: 36px;
     height: 36px;
   }

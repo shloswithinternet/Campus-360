@@ -2,10 +2,15 @@ function renderEvents() {
   const list = document.getElementById('events-list');
   const filters = Array.from(new Set(['All', ...campusData.events.map(event => event.category)]));
   const filterContainer = document.getElementById('event-filters');
+  const queryCategory = new URLSearchParams(window.location.search).get('category');
+  const categoryLookup = Object.fromEntries(
+    campusData.events.map(event => [event.category.toLowerCase(), event.category])
+  );
+  const selectedCategory = queryCategory ? (categoryLookup[queryCategory.toLowerCase()] || 'All') : 'All';
 
   if (filterContainer) {
     filterContainer.innerHTML = filters.map((filter, index) => `
-      <button class="chip ${index === 0 ? 'active' : ''}" data-event-filter="${filter}">${filter}</button>
+      <button class="chip ${filter === selectedCategory ? 'active' : index === 0 && !queryCategory ? 'active' : ''}" data-event-filter="${filter}">${filter}</button>
     `).join('');
 
     filterContainer.querySelectorAll('[data-event-filter]').forEach(button => {
@@ -17,7 +22,7 @@ function renderEvents() {
     });
   }
 
-  renderEventsList('All');
+  renderEventsList(selectedCategory);
 }
 
 function renderEventsList(selectedCategory = 'All') {
