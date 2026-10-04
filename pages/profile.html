@@ -60,7 +60,7 @@
       <main class="container page-main">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Profile</nav>
         <header class="page-header"><span class="eyebrow">Student profile</span><h1>Alex Student</h1><p>Computer Engineering • Semester 3 • Student ID: C360-DEMO-001</p></header>
-        <div class="two-col">
+        <div class="profile-layout">
           <div class="panel-card">
             <div class="profile-top"><div class="avatar large">AS</div><div><h3>Academic overview</h3><p>Department: Computer Engineering</p></div></div>
             <div class="mini-grid">
@@ -70,14 +70,43 @@
               <div class="mini-card"><strong>Mentor</strong><span>Dr. Rao</span></div>
             </div>
           </div>
-          <div class="panel-card">
-            <h3>Campus preferences</h3>
-            <ul class="stack-list">
-              <li>Preferred library slot: 4:00 PM - 6:00 PM</li>
-              <li>Favorite canteen: Main Canteen</li>
-              <li>Joined clubs: Coding Club, AI/ML Club</li>
-              <li>Saved blogs: 3</li>
-            </ul>
+          <div class="panel-card profile-personal">
+            <h3>Personal information</h3>
+            <dl class="profile-details">
+              <div><dt>Student</dt><dd>Alex Student</dd></div>
+              <div><dt>Department</dt><dd>Computer Engineering</dd></div>
+              <div><dt>Semester</dt><dd>3</dd></div>
+              <div><dt>Student ID</dt><dd>C360-DEMO-001</dd></div>
+              <div><dt>Mentor</dt><dd>Dr. Rao</dd></div>
+            </dl>
+          </div>
+          <div class="panel-card profile-settings">
+            <h3>Preferences &amp; settings</h3>
+            <p>Choose how Campus 360 fits into your day. Preferences are saved in this browser.</p>
+            <form id="profile-preferences-form" class="stack-form">
+              <label class="settings-row">Preferred library time
+                <select name="librarySlot">
+                  <option>8:00 AM - 10:00 AM</option>
+                  <option>10:00 AM - 12:00 PM</option>
+                  <option>2:00 PM - 4:00 PM</option>
+                  <option selected>4:00 PM - 6:00 PM</option>
+                </select>
+              </label>
+              <label class="settings-row">Favorite canteen
+                <select name="canteen">
+                  <option selected>Main Canteen</option>
+                  <option>Food Court</option>
+                  <option>Campus Coffee Cart</option>
+                </select>
+              </label>
+              <label class="settings-row">Appearance
+                <select name="theme" id="profile-theme">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </label>
+              <button class="btn btn-primary" type="submit">Save preferences</button>
+            </form>
           </div>
         </div>
       </main>

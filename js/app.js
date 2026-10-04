@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStats();
   renderToday();
   renderAnnouncements();
+  renderDashboardStats();
+  renderDashboardUpdates();
   renderNews();
   renderBlogs();
   renderEvents();
@@ -23,6 +25,46 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSearchSuggestions();
   renderNotificationBadge();
 });
+
+function renderDashboardStats() {
+  if (document.body.dataset.page !== 'dashboard') return;
+  const container = document.getElementById('stats-grid');
+  if (!container) return;
+
+  const metrics = [
+    ['Event registrations', Storage.get(STORAGE_KEYS.registeredEvents, []).length],
+    ['Saved articles', Storage.get(STORAGE_KEYS.savedBlogs, []).length],
+    ['Open reports', Storage.get(STORAGE_KEYS.reports, []).filter(report => report.status !== 'Resolved').length],
+    ['Canteen orders', Storage.get(STORAGE_KEYS.orders, []).length]
+  ];
+  container.innerHTML = metrics.map(([label, value]) => `
+    <div class="stat-card">
+      <div class="kicker"><span>${label}</span></div>
+      <div class="stat-value">${value}</div>
+    </div>
+  `).join('');
+}
+
+function renderDashboardUpdates() {
+  const container = document.getElementById('dashboard-announcements');
+  if (!container) return;
+
+  const announcements = getAnnouncementsData()
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
+
+  container.innerHTML = announcements.map(item => `
+    <article class="announcement priority-${item.priority.toLowerCase().replace(' ', '-')} ${item.read ? 'is-read' : 'is-unread'}">
+      <div class="meta-line">
+        <span class="badge-pill ${item.priority === 'Urgent' ? 'danger' : item.priority === 'Important' ? 'warning' : 'success'}">${item.priority}</span>
+        <span>${item.date}</span>
+      </div>
+      <h3>${item.title}</h3>
+      <p>${item.department} · ${item.category}</p>
+    </article>
+  `).join('') || '<p class="muted">There are no recent announcements.</p>';
+}
 
 function applyTheme(theme = Storage.getTheme()) {
   const isDark = theme === 'dark';

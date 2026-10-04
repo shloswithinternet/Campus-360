@@ -62,9 +62,11 @@
         <header class="page-header"><span class="eyebrow">Campus navigation</span><h1>Campus Map</h1><p>Find your way around buildings, labs, services, and key student spaces.</p></header>
         <div class="map-shell">
           <div class="map-controls">
+            <label>Find a place<input id="map-search" type="search" list="map-locations" placeholder="Search buildings and facilities" /><datalist id="map-locations"></datalist></label>
+            <button class="btn btn-secondary" id="map-search-btn" type="button">Find location</button>
             <label>From<select id="map-from"></select></label>
             <label>To<select id="map-to"></select></label>
-            <button class="btn btn-primary" id="show-route-btn">Show Route</button>
+            <button class="btn btn-primary" id="show-route-btn" type="button">Show Route</button>
           </div>
           <div class="campus-map-wrap"><div id="campus-map" class="campus-map" aria-label="Campus map"></div></div>
         </div>

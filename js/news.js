@@ -1,11 +1,11 @@
 function renderNews() {
   const container = document.getElementById('news-list');
   if (!container) return;
-  container.innerHTML = campusData.news.map(item => `
-    <article class="card news-card">
-      <div class="card-media" style="background: ${item.image};"></div>
+  container.innerHTML = campusData.news.map((item, index) => `
+    <article class="card news-card ${index === 0 ? 'news-card-featured' : 'news-card-list'}">
       <div class="card-body">
         <div class="meta-line">
+          ${index === 0 ? '<span class="editorial-label">Featured story</span>' : ''}
           <span class="badge-pill">${item.category}</span>
           <span>${item.date}</span>
         </div>
@@ -30,7 +30,6 @@ function openNewsModal(id) {
 
   const html = `
     <article>
-      <div class="card-media" style="background: ${item.image}; height: 220px; border-radius: 16px; margin-bottom: 18px;"></div>
       <div class="meta-line">
         <span class="badge-pill">${item.category}</span>
         <span>${item.date}</span>

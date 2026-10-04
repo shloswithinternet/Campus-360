@@ -7,7 +7,7 @@ function renderCanteen() {
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const itemGroups = groups.map(category => `
-    <div class="menu-group">
+    <section class="menu-group" id="menu-${category.toLowerCase()}">
       <h3>${category}</h3>
       ${campusData.canteen
         .filter(item => item.category === category)
@@ -17,14 +17,14 @@ function renderCanteen() {
             <div class="item-main">
               <h4>${item.name}</h4>
               <div class="price-row">
-                <span>${item.veg ? '🌱 Veg' : '🍖 Non-veg'}</span>
+                <span>${item.veg ? 'Vegetarian' : 'Non-vegetarian'} · <span class="item-availability ${item.availability === 'Limited' ? 'is-limited' : item.availability === 'Unavailable' ? 'is-unavailable' : ''}">${item.availability}</span></span>
                 <span class="price">₹${item.price}</span>
               </div>
             </div>
-            <button class="btn btn-secondary add-to-cart" data-id="${item.id}">Add</button>
+            <button class="btn btn-secondary add-to-cart" data-id="${item.id}" ${item.availability === 'Unavailable' ? 'disabled' : ''}>Add</button>
           </div>
         `).join('') || '<p>No items available.</p>'}
-    </div>
+    </section>
   `).join('');
 
   const cartItems = cart.length ? cart.map(item => `
@@ -42,8 +42,13 @@ function renderCanteen() {
   `).join('') : '<p class="muted">Your cart is empty.</p>';
 
   container.innerHTML = `
-    <div class="menu-groups">
-      ${itemGroups}
+    <div class="menu-catalog">
+      <nav class="menu-category-nav" aria-label="Menu categories">
+        ${groups.map(category => `<a href="#menu-${category.toLowerCase()}">${category}</a>`).join('')}
+      </nav>
+      <div class="menu-groups">
+        ${itemGroups}
+      </div>
     </div>
     <aside class="cart-panel">
       <h3>My Cart</h3>
@@ -71,6 +76,10 @@ function addToCart(foodId) {
   const cart = Storage.get(STORAGE_KEYS.cart, []);
   const item = campusData.canteen.find(product => product.id === foodId);
   if (!item) return;
+  if (item.availability === 'Unavailable') {
+    showToast(`${item.name} is currently unavailable.`);
+    return;
+  }
   const existing = cart.find(product => product.id === foodId);
   const next = existing ? cart.map(product => product.id === foodId ? { ...product, qty: product.qty + 1 } : product) : [...cart, { ...item, qty: 1 }];
   Storage.set(STORAGE_KEYS.cart, next);

@@ -60,7 +60,19 @@
       <main class="container page-main">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Library</nav>
         <header class="page-header"><span class="eyebrow">Knowledge hub</span><h1>Campus Library</h1><p>Search books, explore collections, and check what is available for your next academic chapter.</p></header>
+        <div class="catalog-controls" aria-label="Library search and availability">
+          <label class="library-search-wrap"><span class="sr-only">Search by title, author, category, or shelf</span><input class="library-search" id="library-query" type="search" placeholder="Search books, authors, or shelf numbers" /></label>
+          <label class="library-availability">Availability
+            <select id="library-availability">
+              <option value="All">All resources</option>
+              <option value="Available">Available now</option>
+              <option value="Issued">Currently issued</option>
+              <option value="E-book">E-books</option>
+            </select>
+          </label>
+        </div>
         <div class="filter-row" id="library-filters"></div>
+        <p id="library-count" class="catalog-count" aria-live="polite"></p>
         <div id="library-list" class="card-grid"></div>
       </main>
 

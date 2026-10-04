@@ -60,7 +60,7 @@
       <main class="container page-main">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Services / Feedback</nav>
         <header class="page-header"><span class="eyebrow">Your voice matters</span><h1>Campus Feedback</h1><p>Share your suggestions, ideas, and experiences to help improve campus services and student life.</p></header>
-        <div class="panel-card">
+        <div class="panel-card feedback-panel">
           <form id="feedback-form" class="stack-form">
             <label>Category<select name="category"><option>Academic</option><option>Campus Facilities</option><option>Events</option><option>Food &amp; Canteen</option><option>Library</option><option>Transportation</option><option>General</option></select></label>
             <label>Rating<select name="rating"><option>5 - Excellent</option><option>4 - Good</option><option>3 - Average</option><option>2 - Below average</option><option>1 - Poor</option></select></label>
@@ -68,6 +68,7 @@
             <label class="check-row"><input type="checkbox" name="anonymous" /> Send anonymously</label>
             <button class="btn btn-primary" type="submit">Submit Feedback</button>
           </form>
+          <div id="feedback-status" class="feedback-status" role="status" aria-live="polite" hidden></div>
         </div>
       </main>
 

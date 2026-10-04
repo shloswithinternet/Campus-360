@@ -3,11 +3,11 @@ function renderBlogs() {
   if (!container) return;
 
   const blogs = campusData.blogs.concat(Storage.get(STORAGE_KEYS.savedBlogs, []));
-  container.innerHTML = blogs.map(blog => `
-    <article class="card blog-card">
-      <div class="card-media" style="background: ${blog.cover};"></div>
+  container.innerHTML = blogs.map((blog, index) => `
+    <article class="card blog-card ${index === 0 ? 'blog-card-featured' : 'blog-card-list'}">
       <div class="card-body">
         <div class="meta-line">
+          ${index === 0 ? '<span class="editorial-label">From the community</span>' : ''}
           <span class="badge-pill">${blog.category}</span>
           <span>${blog.date}</span>
         </div>
