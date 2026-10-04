@@ -33,105 +33,54 @@ document.addEventListener('DOMContentLoaded', () => {
     : [];
   const ticketCount = Array.isArray(registeredEvents) ? registeredEvents.length : 0;
 
-  // Build the clean, streamlined navigation bar
+  const icon = (name) => {
+    const paths = {
+      search: '<circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>',
+      notifications: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path>',
+      theme: '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>',
+      profile: '<circle cx="12" cy="8" r="4"></circle><path d="M5 21a7 7 0 0 1 14 0"></path>',
+      more: '<path d="M4 7h16M4 12h16M4 17h16"></path>',
+      close: '<path d="m18 6-12 12M6 6l12 12"></path>'
+    };
+    return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ''}</svg>`;
+  };
+
+  // Keep the primary bar short; secondary destinations live in the More drawer.
   const nav = document.querySelector('.nav');
   if (nav) {
     nav.innerHTML = `
       <div class="nav-left">
         <a href="${pagePath('index.html')}" class="brand" aria-label="Campus 360 Home">
           <span class="brand-mark">C</span>
-          <div><strong>Campus 360</strong></div>
+          <span class="brand-name">Campus 360</span>
         </a>
       </div>
 
       <div class="nav-center">
-        <a href="${pagePath('index.html')}" class="nav-link ${page === 'home' ? 'active' : ''}" data-nav="home">Home</a>
-
-        <div class="nav-menu ${page === 'events' ? 'active' : ''}" data-menu="events">
-          <a href="${pagePath('pages/events.html')}" class="nav-link nav-group ${page === 'events' ? 'active' : ''}" data-nav="events" aria-haspopup="true" aria-expanded="false">Events</a>
-          <div class="nav-menu-items" role="menu" aria-label="Events sub-menu">
-            <a href="${pagePath('pages/events.html')}" role="menuitem">All Events</a>
-              <a href="${pagePath('pages/events.html')}?category=Lectures" role="menuitem">Lectures</a>
-              <a href="${pagePath('pages/events.html')}?category=Arts" role="menuitem">Arts &amp; Culture</a>
-              <a href="${pagePath('pages/events.html')}?category=Music" role="menuitem">Music</a>
-              <a href="${pagePath('pages/events.html')}?category=Sport" role="menuitem">Sport</a>
-              <a href="${pagePath('pages/events.html')}?category=Tech" role="menuitem">Technology</a>
-              <a href="${pagePath('pages/events.html')}?category=Careers" role="menuitem">Careers</a>
-              <a href="${pagePath('pages/events.html')}?category=Community" role="menuitem">Community</a>
-          </div>
-        </div>
-
-        <div class="nav-menu ${['services', 'lost-found', 'report', 'feedback', 'campus-help'].includes(page) ? 'active' : ''}" data-menu="services">
-          <a href="${pagePath('pages/services.html')}" class="nav-link nav-group ${['services', 'lost-found', 'report', 'feedback', 'campus-help'].includes(page) ? 'active' : ''}" data-nav="services" aria-haspopup="true" aria-expanded="false">Services</a>
-          <div class="nav-menu-items" role="menu" aria-label="Services sub-menu">
-            <a href="${pagePath('pages/services.html')}" role="menuitem">Services Overview</a>
-            <a href="${pagePath('pages/lost-found.html')}" role="menuitem">Lost &amp; Found</a>
-            <a href="${pagePath('pages/report.html')}" role="menuitem">Report an Issue</a>
-            <a href="${pagePath('pages/feedback.html')}" role="menuitem">Feedback</a>
-            <a href="${pagePath('pages/campus-help.html')}" role="menuitem">Campus Help Desk</a>
-          </div>
-        </div>
-
-        <a href="${pagePath('pages/announcements.html')}" class="nav-link ${page === 'announcements' ? 'active' : ''}" data-nav="announcements">Announcements</a>
-        <a href="${pagePath('pages/campus-map.html')}" class="nav-link ${page === 'campus-map' ? 'active' : ''}" data-nav="campus-map">Campus Map</a>
+        <a href="${pagePath('index.html')}" class="nav-link ${page === 'home' ? 'active' : ''}" data-nav="home" ${page === 'home' ? 'aria-current="page"' : ''}>Home</a>
+        <a href="${pagePath('pages/events.html')}" class="nav-link ${page === 'events' ? 'active' : ''}" data-nav="events" ${page === 'events' ? 'aria-current="page"' : ''}>Events</a>
+        <a href="${pagePath('pages/news.html')}" class="nav-link ${page === 'news' ? 'active' : ''}" data-nav="news" ${page === 'news' ? 'aria-current="page"' : ''}>News</a>
+        <a href="${pagePath('pages/campus-map.html')}" class="nav-link ${['campus-map', 'facilities', 'departments', 'clubs'].includes(page) ? 'active' : ''}" data-nav="campus" ${page === 'campus-map' ? 'aria-current="page"' : ''}>Campus</a>
       </div>
 
       <div class="nav-right">
-        <button class="icon-btn search-trigger" type="button" aria-label="Open search">⌕</button>
-        <button class="icon-btn notification-trigger" type="button" aria-label="Open notifications">
-          🔔
+        <button class="icon-btn search-trigger" type="button" aria-label="Search Campus 360" aria-controls="search-overlay" aria-expanded="false" title="Search">${icon('search')}</button>
+        <button class="icon-btn notification-trigger" type="button" aria-label="${unreadNotifications ? `Open notifications, ${unreadNotifications} unread` : 'Open notifications'}" aria-controls="notification-panel" aria-expanded="false">
+          ${icon('notifications')}
           <span class="badge" id="notification-badge" style="${unreadNotifications > 0 ? '' : 'display: none;'}">${unreadNotifications}</span>
         </button>
-        <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">${currentTheme === 'dark' ? '🌙' : '☀️'}</button>
-        <a href="${pagePath('pages/events.html')}#tickets" class="tickets-pill" id="tickets-button" aria-label="View registered event tickets">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
-          <span>My tickets</span>
-          <span class="ticket-count" id="ticket-badge">${ticketCount}</span>
+        <button class="icon-btn theme-toggle" type="button" aria-label="${currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}" aria-pressed="${currentTheme === 'dark'}" title="${currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}">${icon('theme')}</button>
+        <a href="${pagePath('pages/profile.html')}" class="profile-pill ${page === 'profile' ? 'active' : ''}" id="profile-button" aria-label="Open profile" ${page === 'profile' ? 'aria-current="page"' : ''}>
+          ${icon('profile')}<span class="profile-label">Profile</span>
         </a>
-        <a href="${pagePath('pages/profile.html')}" class="profile-pill ${page === 'profile' ? 'active' : ''}" id="profile-button" aria-label="Open student profile">
-          <span class="avatar">AS</span>
-          <span>Alex</span>
-        </a>
-        <button class="more-menu-trigger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="global-sidebar">⋮</button>
+        <button class="more-menu-trigger" type="button" aria-label="Open More navigation" aria-expanded="false" aria-controls="global-sidebar">
+          ${icon('more')}<span>More</span>
+        </button>
       </div>
     `;
-
-    // Dropdown hover & accessible focus management
-    const navMenus = document.querySelectorAll('.nav-menu');
-    navMenus.forEach(menu => {
-      const trigger = menu.querySelector('.nav-group');
-      if (!trigger) return;
-
-      menu.addEventListener('mouseenter', () => {
-        menu.classList.add('is-open');
-        trigger.setAttribute('aria-expanded', 'true');
-      });
-
-      menu.addEventListener('mouseleave', () => {
-        menu.classList.remove('is-open');
-        trigger.setAttribute('aria-expanded', 'false');
-      });
-
-      menu.addEventListener('focusin', () => {
-        menu.classList.add('is-open');
-        trigger.setAttribute('aria-expanded', 'true');
-      });
-
-      menu.addEventListener('focusout', (e) => {
-        if (!menu.contains(e.relatedTarget)) {
-          menu.classList.remove('is-open');
-          trigger.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      menu.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          menu.classList.remove('is-open');
-          trigger.setAttribute('aria-expanded', 'false');
-          trigger.focus();
-        }
-      });
-    });
+    if (!document.querySelector('.demo-disclosure')) {
+      nav.insertAdjacentHTML('afterend', '<p class="demo-disclosure" role="note"><span>Prototype</span> Sample content is not verified APSIT information.</p>');
+    }
   }
 
   // Ensure Global Sidebar Drawer exists in DOM
@@ -143,55 +92,50 @@ document.addEventListener('DOMContentLoaded', () => {
     drawerRoot.id = 'nav-drawer-root';
     drawerRoot.innerHTML = `
       <div class="nav-drawer-backdrop" id="nav-drawer-backdrop"></div>
-      <aside class="nav-drawer" id="global-sidebar" aria-hidden="true" role="dialog" aria-label="Campus 360 navigation menu">
+      <aside class="nav-drawer" id="global-sidebar" aria-hidden="true" inert role="dialog" aria-modal="false" aria-labelledby="nav-drawer-title">
         <div class="nav-drawer-header">
           <div class="brand">
             <span class="brand-mark">C</span>
-            <div><strong>Campus 360</strong></div>
+            <span id="nav-drawer-title" class="brand-name">More from Campus 360</span>
           </div>
-          <button class="nav-drawer-close" type="button" aria-label="Close menu">×</button>
+          <button class="nav-drawer-close" type="button" aria-label="Close menu">${icon('close')}</button>
         </div>
         <div class="nav-drawer-body">
-          <div class="nav-drawer-group mobile-nav-group">
-            <div class="nav-drawer-label">Quick Links</div>
-            <a href="${pagePath('index.html')}" class="${page === 'home' ? 'active' : ''}">🏠 Home</a>
-            <a href="${pagePath('pages/events.html')}" class="${page === 'events' ? 'active' : ''}">🎉 Events</a>
-            <a href="${pagePath('pages/services.html')}" class="${page === 'services' ? 'active' : ''}">🛠️ Services Overview</a>
-            <a href="${pagePath('pages/announcements.html')}" class="${page === 'announcements' ? 'active' : ''}">📢 Announcements</a>
-            <a href="${pagePath('pages/campus-map.html')}" class="${page === 'campus-map' ? 'active' : ''}">🗺️ Campus Map</a>
+          <div class="nav-drawer-group">
+            <div class="nav-drawer-label">Campus</div>
+            <a href="${pagePath('pages/campus-map.html')}" class="${page === 'campus-map' ? 'active' : ''}">Campus map</a>
+            <a href="${pagePath('pages/facilities.html')}" class="${page === 'facilities' ? 'active' : ''}">Facilities</a>
+            <a href="${pagePath('pages/departments.html')}" class="${page === 'departments' ? 'active' : ''}">Departments</a>
+            <a href="${pagePath('pages/clubs.html')}" class="${page === 'clubs' ? 'active' : ''}">Clubs</a>
+            <a href="${pagePath('pages/campus-help.html')}" class="${page === 'campus-help' ? 'active' : ''}">Campus help</a>
           </div>
           <div class="nav-drawer-group">
-            <div class="nav-drawer-label">Explore Campus</div>
-            <a href="${pagePath('pages/news.html')}" class="${page === 'news' ? 'active' : ''}">📰 Campus News</a>
-            <a href="${pagePath('pages/blogs.html')}" class="${page === 'blogs' ? 'active' : ''}">✍️ Student Blogs</a>
-            <a href="${pagePath('pages/clubs.html')}" class="${page === 'clubs' ? 'active' : ''}">👥 Student Clubs</a>
-            <a href="${pagePath('pages/departments.html')}" class="${page === 'departments' ? 'active' : ''}">🏫 Departments</a>
-            <a href="${pagePath('pages/facilities.html')}" class="${page === 'facilities' ? 'active' : ''}">🏢 Campus Facilities</a>
-            <a href="${pagePath('pages/calendar.html')}" class="${page === 'calendar' ? 'active' : ''}">📅 Academic Calendar</a>
-            <a href="${pagePath('pages/timetable.html')}" class="${page === 'timetable' ? 'active' : ''}">⏱️ Timetable</a>
-            <a href="${pagePath('pages/placement.html')}" class="${page === 'placement' ? 'active' : ''}">💼 Placement &amp; Career</a>
+            <div class="nav-drawer-label">Academic</div>
+            <a href="${pagePath('pages/calendar.html')}" class="${page === 'calendar' ? 'active' : ''}">Calendar</a>
+            <a href="${pagePath('pages/timetable.html')}" class="${page === 'timetable' ? 'active' : ''}">Timetable</a>
+            <a href="${pagePath('pages/library.html')}" class="${page === 'library' ? 'active' : ''}">Library</a>
+            <a href="${pagePath('pages/placement.html')}" class="${page === 'placement' ? 'active' : ''}">Placement</a>
           </div>
           <div class="nav-drawer-group">
-            <div class="nav-drawer-label">Campus Hubs</div>
-            <a href="${pagePath('pages/library.html')}" class="${page === 'library' ? 'active' : ''}">📚 Library Hub</a>
-            <a href="${pagePath('pages/canteen.html')}" class="${page === 'canteen' ? 'active' : ''}">🍴 Canteen &amp; Dining</a>
-            <a href="${pagePath('pages/campus-help.html')}" class="${page === 'campus-help' ? 'active' : ''}">❓ Campus Help Desk</a>
+            <div class="nav-drawer-label">Services</div>
+            <a href="${pagePath('pages/canteen.html')}" class="${page === 'canteen' ? 'active' : ''}">Canteen</a>
+            <a href="${pagePath('pages/lost-found.html')}" class="${page === 'lost-found' ? 'active' : ''}">Lost &amp; Found</a>
+            <a href="${pagePath('pages/report.html')}" class="${page === 'report' ? 'active' : ''}">Report an issue</a>
+            <a href="${pagePath('pages/feedback.html')}" class="${page === 'feedback' ? 'active' : ''}">Feedback</a>
           </div>
           <div class="nav-drawer-group">
-            <div class="nav-drawer-label">Services &amp; Support</div>
-            <a href="${pagePath('pages/lost-found.html')}" class="${page === 'lost-found' ? 'active' : ''}">🔎 Lost &amp; Found</a>
-            <a href="${pagePath('pages/report.html')}" class="${page === 'report' ? 'active' : ''}">🚨 Report an Issue</a>
-            <a href="${pagePath('pages/feedback.html')}" class="${page === 'feedback' ? 'active' : ''}">💬 Feedback</a>
+            <div class="nav-drawer-label">Information</div>
+            <a href="${pagePath('pages/announcements.html')}" class="${page === 'announcements' ? 'active' : ''}">Announcements</a>
+            <a href="${pagePath('pages/blogs.html')}" class="${page === 'blogs' ? 'active' : ''}">Blogs</a>
+            <a href="${pagePath('pages/services.html')}" class="${page === 'services' ? 'active' : ''}">Services overview</a>
           </div>
           <div class="nav-drawer-group">
-            <div class="nav-drawer-label">Account</div>
-            <a href="${pagePath('pages/dashboard.html')}" class="${page === 'dashboard' ? 'active' : ''}">📊 Student Dashboard</a>
-            <a href="${pagePath('pages/profile.html')}" class="${page === 'profile' ? 'active' : ''}">👤 Student Profile</a>
+            <div class="nav-drawer-label">Your account</div>
+            <a href="${pagePath('pages/dashboard.html')}" class="${page === 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a href="${pagePath('pages/profile.html')}" class="${page === 'profile' ? 'active' : ''}">Profile</a>
+            <a href="${pagePath('pages/events.html')}#tickets" id="tickets-button" class="tickets-pill">My event tickets <span class="ticket-count" id="ticket-badge">${ticketCount}</span></a>
           </div>
-          <div class="nav-drawer-group">
-            <div class="nav-drawer-label">Official Portal</div>
-            <a href="https://www.apsit.edu.in" target="_blank" rel="noreferrer">🌐 APSIT Official Website ↗</a>
-          </div>
+          <p class="nav-drawer-note">Prototype content only. Verify details with the relevant campus office.</p>
         </div>
       </aside>
     `;
@@ -199,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
     drawer = document.getElementById('global-sidebar');
     overlay = document.getElementById('nav-drawer-backdrop');
   }
+
+  document.querySelector('#notification-panel')?.setAttribute('role', 'region');
+  document.querySelector('#notification-panel')?.setAttribute('aria-label', 'Notifications');
 
   // Smooth scroll for hash links
   document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -208,7 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = document.querySelector(href);
         if (target) {
           event.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start'
+          });
         }
       }
     });
@@ -221,9 +171,12 @@ function openDrawer() {
   const backdropEl = document.getElementById('nav-drawer-backdrop');
   const moreBtn = document.querySelector('.more-menu-trigger');
   if (!drawerEl || !backdropEl) return;
+  window.drawerReturnFocus = document.activeElement;
+  drawerEl.removeAttribute('inert');
   drawerEl.classList.add('open');
   backdropEl.classList.add('open');
   drawerEl.setAttribute('aria-hidden', 'false');
+  drawerEl.setAttribute('aria-modal', 'true');
   if (moreBtn) moreBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('drawer-open');
   const closeBtn = drawerEl.querySelector('.nav-drawer-close');
@@ -235,14 +188,20 @@ function closeDrawer() {
   const backdropEl = document.getElementById('nav-drawer-backdrop');
   const moreBtn = document.querySelector('.more-menu-trigger');
   if (!drawerEl || !backdropEl) return;
+  const wasOpen = drawerEl.classList.contains('open');
   drawerEl.classList.remove('open');
   backdropEl.classList.remove('open');
   drawerEl.setAttribute('aria-hidden', 'true');
+  drawerEl.setAttribute('aria-modal', 'false');
+  drawerEl.setAttribute('inert', '');
   if (moreBtn) {
     moreBtn.setAttribute('aria-expanded', 'false');
-    moreBtn.focus();
   }
   document.body.classList.remove('drawer-open');
+  if (wasOpen) {
+    const returnTarget = window.drawerReturnFocus instanceof HTMLElement ? window.drawerReturnFocus : moreBtn;
+    returnTarget?.focus();
+  }
 }
 
 // Delegated click handling for resilient header controls
@@ -289,7 +248,10 @@ document.addEventListener('click', (event) => {
         Storage.setTheme(nextTheme);
       }
       document.querySelectorAll('.theme-toggle').forEach(btn => {
-        btn.textContent = nextTheme === 'dark' ? '🌙' : '☀️';
+        const label = nextTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
+        btn.setAttribute('aria-pressed', String(nextTheme === 'dark'));
       });
     }
     if (typeof showToast === 'function') {
@@ -332,11 +294,21 @@ document.addEventListener('click', (event) => {
   // Notification trigger
   if (event.target.closest('.notification-trigger')) {
     event.preventDefault();
+    const trigger = event.target.closest('.notification-trigger');
     const panel = document.getElementById('notification-panel');
     if (panel) {
       const isOpen = panel.classList.contains('open');
       panel.classList.toggle('open', !isOpen);
-      panel.setAttribute('aria-hidden', String(!isOpen));
+      panel.setAttribute('aria-hidden', String(isOpen));
+      panel.toggleAttribute('inert', isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) {
+        window.notificationReturnFocus = trigger;
+        panel.querySelector('#mark-all-read')?.focus();
+      } else if (window.notificationReturnFocus instanceof HTMLElement && window.notificationReturnFocus.isConnected) {
+        window.notificationReturnFocus.focus();
+      }
+      if (typeof renderNotificationBadge === 'function') renderNotificationBadge();
     }
     return;
   }
@@ -344,6 +316,19 @@ document.addEventListener('click', (event) => {
 
 // Escape key closes drawer, modal, and overlays
 document.addEventListener('keydown', (event) => {
+  const drawerEl = document.getElementById('global-sidebar');
+  if (drawerEl?.classList.contains('open') && event.key === 'Tab') {
+    const focusable = [...drawerEl.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  }
   if (event.key === 'Escape') {
     closeDrawer();
     const overlay = document.getElementById('search-overlay');
@@ -358,6 +343,12 @@ document.addEventListener('keydown', (event) => {
     if (notifPanel && notifPanel.classList.contains('open')) {
       notifPanel.classList.remove('open');
       notifPanel.setAttribute('aria-hidden', 'true');
+      notifPanel.setAttribute('inert', '');
+      document.querySelector('.notification-trigger')?.setAttribute('aria-expanded', 'false');
+      if (window.notificationReturnFocus instanceof HTMLElement && window.notificationReturnFocus.isConnected) {
+        window.notificationReturnFocus.focus();
+      }
+      if (typeof renderNotificationBadge === 'function') renderNotificationBadge();
     }
     const modal = document.getElementById('generic-modal');
     if (modal && modal.classList.contains('open')) {

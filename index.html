@@ -79,175 +79,87 @@
         </nav>
       </header>
 
-      <main>
-        <section class="hero container" id="home">
+      <main class="home-page">
+        <section class="home-hero container" id="home" aria-labelledby="home-title">
           <div class="hero-copy">
-            <span class="eyebrow">Digital campus ecosystem</span>
-            <h1>Campus 360</h1>
-            <p class="tagline">Everything Campus. One Place.</p>
+            <span class="eyebrow">A student-first campus hub</span>
+            <h1 id="home-title">Campus life,<br />in one place.</h1>
+            <p class="tagline">Find what matters. Get on with your day.</p>
             <p class="hero-text">
-              Your digital gateway to campus life — discover events, announcements,
-              facilities, resources, services, and everything happening in and around the campus.
+              Explore campus updates, events, learning resources, and everyday services from one starting point.
             </p>
             <div class="hero-actions">
-              <a href="#explore" class="btn btn-primary">Explore Campus</a>
-              <a href="pages/events.html" class="btn btn-secondary">View Events</a>
+              <a href="pages/events.html" class="btn btn-primary">Explore events</a>
+              <a href="pages/campus-map.html" class="btn btn-secondary">Find your way</a>
             </div>
+            <label class="home-search-label" for="hero-search">Search across Campus 360</label>
             <div class="global-search-box">
-              <span>🔎</span>
-              <input type="text" id="hero-search" placeholder="Search campus, events, books, clubs..." aria-label="Search campus" />
+              <input type="search" id="hero-search" placeholder="Try events, library, clubs, or services" aria-label="Search Campus 360" />
             </div>
           </div>
 
-          <div class="hero-visual" aria-label="Campus connectivity illustration">
-            <div class="campus-visual">
-              <div class="center-node">Campus 360</div>
-              <span class="node node-1">Events</span>
-              <span class="node node-2">Library</span>
-              <span class="node node-3">Canteen</span>
-              <span class="node node-4">Map</span>
-              <span class="node node-5">Clubs</span>
-              <span class="node node-6">News</span>
-              <span class="node node-7">Students</span>
-              <span class="node node-8">Facilities</span>
-            </div>
-          </div>
+          <nav class="home-hero-aside" aria-label="Start exploring">
+            <a href="pages/announcements.html">Check campus notices</a>
+            <a href="pages/library.html">Search learning resources</a>
+            <a href="pages/canteen.html">Browse campus services</a>
+            <a href="pages/dashboard.html">Open your dashboard</a>
+            <a href="pages/profile.html">Manage your preferences</a>
+          </nav>
         </section>
 
-        <section class="quick-actions container" id="explore">
+        <section class="home-section container" id="events-section" aria-labelledby="home-events-heading">
+          <div class="section-head with-actions">
+            <div>
+              <span class="eyebrow">Discover</span>
+              <h2 id="home-events-heading">What’s happening</h2>
+            </div>
+            <a class="link-btn" href="pages/events.html">All events <span aria-hidden="true">→</span></a>
+          </div>
+          <div id="events-list" class="home-event-list"></div>
+        </section>
+
+        <section class="home-section container" aria-labelledby="home-updates-heading">
           <div class="section-head">
-            <div>
-              <span class="eyebrow">Quick Access</span>
-              <h2>Quick Actions</h2>
-            </div>
+            <span class="eyebrow">Stay informed</span>
+            <h2 id="home-updates-heading">The campus desk</h2>
           </div>
-          <div class="quick-grid" id="quick-grid">
-            <a href="pages/campus-map.html" class="quick-card"><span>🗺</span> Campus Map</a>
-            <a href="pages/announcements.html" class="quick-card"><span>📢</span> Announcements</a>
-            <a href="pages/events.html" class="quick-card"><span>🎉</span> Events</a>
-            <a href="pages/canteen.html" class="quick-card"><span>🍴</span> Canteen</a>
-            <a href="pages/library.html" class="quick-card"><span>📚</span> Library</a>
-            <a href="pages/lost-found.html" class="quick-card"><span>🔎</span> Lost &amp; Found</a>
-            <a href="pages/report.html" class="quick-card"><span>🚨</span> Report Issue</a>
-            <a href="pages/feedback.html" class="quick-card"><span>💬</span> Feedback</a>
-            <a href="pages/departments.html" class="quick-card"><span>🏫</span> Departments</a>
-            <a href="pages/clubs.html" class="quick-card"><span>👥</span> Clubs</a>
-            <a href="pages/news.html" class="quick-card"><span>📰</span> Campus News</a>
-            <a href="pages/calendar.html" class="quick-card"><span>📅</span> Academic Calendar</a>
+          <div class="home-editorial-grid">
+            <section aria-labelledby="home-notices-heading">
+              <div class="section-head with-actions">
+                <h3 id="home-notices-heading">Notices</h3>
+                <a class="link-btn" href="pages/announcements.html">All notices <span aria-hidden="true">→</span></a>
+              </div>
+              <div id="announcements-list" class="stack-list"></div>
+            </section>
+            <section aria-labelledby="home-news-heading">
+              <div class="section-head with-actions">
+                <h3 id="home-news-heading">News &amp; stories</h3>
+                <a class="link-btn" href="pages/news.html">More stories <span aria-hidden="true">→</span></a>
+              </div>
+              <div id="news-list" class="home-news-list"></div>
+            </section>
           </div>
         </section>
 
-        <section class="stats container" id="stats-section">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">At a glance</span>
-              <h2>Campus at a Glance</h2>
-            </div>
-          </div>
-          <div class="stats-grid" id="stats-grid"></div>
-        </section>
-
-        <section class="container today-section" id="today-section">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">What is happening today</span>
-              <h2>Today on Campus</h2>
-            </div>
-          </div>
-          <div id="today-list" class="timeline-list"></div>
-        </section>
-
-        <section class="container module-section" id="events-section">
+        <section class="home-section container" id="explore" aria-labelledby="home-services-heading">
           <div class="section-head with-actions">
             <div>
-              <span class="eyebrow">Campus calendar</span>
-              <h2>Upcoming Events</h2>
+              <span class="eyebrow">Useful places to start</span>
+              <h2 id="home-services-heading">Explore campus</h2>
             </div>
-            <a class="btn btn-secondary" href="pages/events.html">View All Events →</a>
+            <a class="link-btn" href="pages/services.html">All services <span aria-hidden="true">→</span></a>
           </div>
-          <div id="events-list" class="card-grid"></div>
-        </section>
-
-        <section class="container module-section" id="announcements-section">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Updates</span>
-              <h2>Announcements</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/announcements.html">View All Announcements →</a>
+          <div class="home-services-list">
+            <a href="pages/campus-map.html">Campus map</a>
+            <a href="pages/departments.html">Departments</a>
+            <a href="pages/facilities.html">Facilities</a>
+            <a href="pages/clubs.html">Clubs &amp; community</a>
+            <a href="pages/calendar.html">Academic calendar</a>
+            <a href="pages/timetable.html">Timetable</a>
+            <a href="pages/lost-found.html">Lost &amp; Found</a>
+            <a href="pages/report.html">Report an issue</a>
           </div>
-          <div id="announcements-list" class="stack-list"></div>
-        </section>
-
-        <section class="container module-section" id="news-section">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Campus coverage</span>
-              <h2>Latest Campus News</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/news.html">View All News →</a>
-          </div>
-          <div id="news-list" class="card-grid"></div>
-        </section>
-
-        <section class="container module-section" id="canteen-section">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Campus dining</span>
-              <h2>Today's Specials</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/canteen.html">View Full Menu →</a>
-          </div>
-          <div id="canteen-menu" class="canteen-layout"></div>
-        </section>
-
-        <section class="container module-section" id="library-section">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Knowledge hub</span>
-              <h2>Library Highlights</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/library.html">Explore Library →</a>
-          </div>
-          <div id="library-list" class="card-grid"></div>
-        </section>
-
-        <section class="container module-section" id="clubs-section">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Community</span>
-              <h2>Featured Clubs</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/clubs.html">Explore Clubs →</a>
-          </div>
-          <div id="clubs-list" class="card-grid"></div>
-        </section>
-
-        <section class="container module-section" id="campus-facilities">
-          <div class="section-head with-actions">
-            <div>
-              <span class="eyebrow">Campus services</span>
-              <h2>Campus Facilities</h2>
-            </div>
-            <a class="btn btn-secondary" href="pages/facilities.html">View All Facilities →</a>
-          </div>
-          <div id="facilities-list" class="card-grid"></div>
-        </section>
-
-        <section class="container module-section" id="official-apsit">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">Official campus link</span>
-              <h2>Official APSIT</h2>
-            </div>
-          </div>
-          <div class="official-panel">
-            <div>
-              <h3>Visit the official APSIT website</h3>
-              <p>Access official notices, admissions, academic records, and official campus information.</p>
-            </div>
-            <a href="https://www.apsit.edu.in" class="btn btn-primary" target="_blank" rel="noreferrer">Open APSIT</a>
-          </div>
+          <p class="home-source-note">This concept uses sample content to demonstrate the interface. Confirm campus information with official sources.</p>
         </section>
       </main>
 
@@ -358,4 +270,3 @@
     <script src="js/page-shell.js"></script>
   </body>
 </html>
-

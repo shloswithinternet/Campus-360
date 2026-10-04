@@ -32,30 +32,115 @@ function renderCalendar() {
   if (!root) return;
 
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const days = Array.from({ length: 35 }, (_, idx) => {
-    const date = 1 + idx;
-    return { day: date, isCurrent: date <= 31 && date >= 5 };
-  });
+  let shownMonth = new Date(2026, 9, 1);
+  let selectedDate = '';
 
-  root.innerHTML = `
-    <div class="calendar-head">
-      <h3>October 2026</h3>
-      <div class="filter-row">
-        <button class="chip active">All</button>
-        <button class="chip">Events</button>
-        <button class="chip">Exam</button>
-      </div>
-    </div>
-    <div class="calendar-grid">
-      ${weekdays.map(day => `<div class="calendar-weekday">${day}</div>`).join('')}
-      ${days.map(day => `
-        <div class="calendar-day ${day.isCurrent ? 'active' : ''}">
-          <span>${day.day}</span>
-          ${day.day >= 5 && day.day <= 23 ? '<span class="event-dot"></span>' : ''}
+  const dateKey = date => [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0')
+  ].join('-');
+
+  const calendarEvents = () => (campusData.events || []).filter(event =>
+    event.start && event.start.slice(0, 7) === `${shownMonth.getFullYear()}-${String(shownMonth.getMonth() + 1).padStart(2, '0')}`
+  );
+
+  const render = () => {
+    const year = shownMonth.getFullYear();
+    const month = shownMonth.getMonth();
+    const monthEvents = calendarEvents();
+    const eventDates = new Set(monthEvents.map(event => event.start.slice(0, 10)));
+    const firstWeekday = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+    const monthLabel = shownMonth.toLocaleDateString('en', { month: 'long', year: 'numeric' });
+    const todayKey = typeof EVENT_CONFIG !== 'undefined' ? EVENT_CONFIG.todayKey : '';
+
+    if (!selectedDate || selectedDate.slice(0, 7) !== `${year}-${String(month + 1).padStart(2, '0')}`) {
+      selectedDate = monthEvents[0]?.start.slice(0, 10) || dateKey(new Date(year, month, 1));
+    }
+
+    const selectedEvents = monthEvents.filter(event => event.start.slice(0, 10) === selectedDate);
+    const selectedDateValue = new Date(`${selectedDate}T12:00:00`);
+
+    root.innerHTML = `
+      <div class="calendar-head">
+        <div>
+          <span class="eyebrow">Sample schedule</span>
+          <h2>${monthLabel}</h2>
         </div>
-      `).join('')}
-    </div>
-  `;
+        <div class="calendar-controls" aria-label="Calendar month navigation">
+          <button class="btn btn-secondary" type="button" data-month-shift="-1" aria-label="Previous month">Previous</button>
+          <button class="btn btn-secondary" type="button" data-month-shift="1" aria-label="Next month">Next</button>
+        </div>
+      </div>
+      <p class="calendar-legend"><span class="event-dot" aria-hidden="true"></span>Sample event date</p>
+      <div class="calendar-grid" role="group" aria-label="${monthLabel}">
+        ${weekdays.map(day => `<div class="calendar-weekday">${day}</div>`).join('')}
+        ${Array.from({ length: cellCount }, (_, index) => {
+          const dayNumber = index - firstWeekday + 1;
+          const date = new Date(year, month, dayNumber);
+          const key = dateKey(date);
+          const inCurrentMonth = date.getMonth() === month;
+          const hasEvent = inCurrentMonth && eventDates.has(key);
+          const isSelected = key === selectedDate;
+          const isToday = key === todayKey;
+          const accessibleDate = date.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+          const eventNote = hasEvent ? ', sample event scheduled' : '';
+
+          return `
+            <button class="calendar-day ${inCurrentMonth ? '' : 'outside-month'} ${hasEvent ? 'has-event' : ''} ${isSelected ? 'is-selected' : ''}"
+              type="button" data-calendar-date="${key}" aria-label="${accessibleDate}${eventNote}"
+              aria-pressed="${isSelected}" ${isToday ? 'aria-current="date"' : ''}>
+              <span>${date.getDate()}</span>
+              ${hasEvent ? '<span class="event-dot" aria-hidden="true"></span>' : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+      <section class="calendar-selection" aria-live="polite" aria-atomic="true">
+        <h3>${selectedDateValue.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
+        ${selectedEvents.length ? selectedEvents.map(event => `
+          <article class="calendar-event">
+            <div>
+              <span class="editorial-label">${event.category}</span>
+              <h4>${event.title}</h4>
+              <p>${formatTime(event.start)} · ${event.venue}</p>
+            </div>
+            <a class="link-btn" href="events.html">Event details</a>
+          </article>
+        `).join('') : '<p class="calendar-empty">No sample events are scheduled for this date.</p>'}
+      </section>
+    `;
+  };
+
+  if (!root.dataset.bound) {
+    root.dataset.bound = 'true';
+    root.addEventListener('click', event => {
+      const dateButton = event.target.closest('[data-calendar-date]');
+      if (dateButton) {
+        selectedDate = dateButton.dataset.calendarDate;
+        const selectedDateObject = new Date(`${selectedDate}T12:00:00`);
+        if (selectedDateObject.getMonth() !== shownMonth.getMonth() || selectedDateObject.getFullYear() !== shownMonth.getFullYear()) {
+          shownMonth = new Date(selectedDateObject.getFullYear(), selectedDateObject.getMonth(), 1);
+        }
+        render();
+        root.querySelector(`[data-calendar-date="${selectedDate}"]`)?.focus();
+        return;
+      }
+
+      const monthButton = event.target.closest('[data-month-shift]');
+      if (monthButton) {
+        const shift = Number(monthButton.dataset.monthShift);
+        shownMonth.setMonth(shownMonth.getMonth() + shift);
+        selectedDate = '';
+        render();
+        root.querySelector(`[data-month-shift="${shift}"]`)?.focus();
+      }
+    });
+  }
+
+  render();
 }
 
 function renderProfile() {

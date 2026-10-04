@@ -820,33 +820,35 @@ function renderEvents() {
   const list = document.getElementById('events-list');
   if (list) {
     const events = (campusData.events || []).slice(0, 3);
-    list.innerHTML = events.map(event => {
+    list.innerHTML = events.length ? events.map((event, index) => {
       const avail = availabilityLabel(event);
+      const hasRegistration = isEventRegistered(event.id) || isEventWaitlisted(event.id);
       return `
-        <article class="card event-card" style="border: 1px solid var(--rule); background: var(--card); border-radius: 4px; overflow: hidden;">
+        <article class="home-event ${index === 0 ? 'is-featured' : ''}">
           ${event.image && !event.image.startsWith('linear-gradient') ? `
-            <div style="aspect-ratio: 16/9; overflow: hidden; background: var(--card-alt);">
-              <img src="${resolveAssetPath(event.image)}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div class="home-event-media">
+              <img src="${resolveAssetPath(event.image)}" alt="" loading="lazy" decoding="async" />
             </div>
           ` : ''}
-          <div class="card-body" style="padding: 20px;">
-            <div style="font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <span class="font-medium text-accent">${event.category}</span>
-              <span style="color: var(--rule);">/</span>
-              <span class="text-muted">${formatRange(event.start, event.end)}</span>
+          <div class="home-event-body">
+            <div class="meta-line">
+              <span class="editorial-label">${event.category}</span>
+              <span>${formatRange(event.start, event.end)}</span>
+              <span class="badge-pill">Sample</span>
             </div>
-            <h3 class="font-display" style="font-size: 24px; line-height: 1.1; margin: 0 0 8px;">
-              <a href="pages/events.html" style="color: var(--ink); text-decoration: none;">${event.title}</a>
+            <h3>
+              <a href="pages/events.html">${event.title}</a>
             </h3>
-            <p style="font-size: 14px; color: var(--muted); margin: 0 0 16px;">${event.venue} · ${event.format}</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--rule);">
-              <span style="font-size: 13px;" class="${avail.urgent ? 'text-accent font-medium' : 'text-muted'}">${avail.text}</span>
+            <p class="home-event-summary">${event.summary || event.description || ''}</p>
+            <p class="home-event-location">${event.venue} <span aria-hidden="true">·</span> ${event.format}</p>
+            <div class="home-event-actions">
+              ${hasRegistration ? '' : `<span class="${avail.urgent ? 'is-urgent' : ''}">${avail.text}</span>`}
               ${renderRegisterButton(event, 'sm')}
             </div>
           </div>
         </article>
       `;
-    }).join('');
+    }).join('') : '<p class="home-empty-state">There are no sample events to display.</p>';
   }
 }
 

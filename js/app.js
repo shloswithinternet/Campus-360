@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  initializeGlobalOverlayStates();
   const initialTheme = Storage.getTheme();
   applyTheme(initialTheme);
   bindGlobalControls();
@@ -70,9 +71,72 @@ function applyTheme(theme = Storage.getTheme()) {
   const isDark = theme === 'dark';
   document.body.classList.toggle('dark', isDark);
   document.querySelectorAll('.theme-toggle').forEach(toggle => {
-    toggle.textContent = isDark ? '🌙' : '☀️';
+    const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+    toggle.setAttribute('aria-label', label);
+    toggle.setAttribute('title', label);
+    toggle.setAttribute('aria-pressed', String(isDark));
   });
   Storage.setTheme(theme);
+}
+
+function initializeGlobalOverlayStates() {
+  const modal = document.getElementById('generic-modal');
+  const modalPanel = modal?.querySelector('.modal-panel');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchDialog = searchOverlay?.querySelector('.search-modal');
+  const notificationPanel = document.getElementById('notification-panel');
+  const searchHeading = searchDialog?.querySelector('.search-header h3');
+
+  [[modal, modalPanel, 'Campus 360 details'], [searchOverlay, searchDialog, 'Search Campus 360'], [notificationPanel, null, 'Notifications']]
+    .forEach(([overlay, dialog, label]) => {
+      if (!overlay) return;
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.setAttribute('inert', '');
+      if (dialog) {
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'false');
+        dialog.setAttribute('aria-label', label);
+      }
+    });
+
+  if (searchHeading && searchDialog) {
+    searchHeading.id = 'search-dialog-title';
+    searchDialog.removeAttribute('aria-label');
+    searchDialog.setAttribute('aria-labelledby', 'search-dialog-title');
+  }
+
+  notificationPanel?.setAttribute('role', 'region');
+  notificationPanel?.setAttribute('aria-label', 'Notifications');
+}
+
+function updateModalBackgroundState() {
+  const hasOpenDialog = ['generic-modal', 'search-overlay'].some(id =>
+    document.getElementById(id)?.classList.contains('open')
+  );
+
+  document.querySelectorAll('.page-shell, #nav-drawer-root').forEach(element => {
+    if (hasOpenDialog) {
+      element.setAttribute('inert', '');
+    } else {
+      element.removeAttribute('inert');
+    }
+  });
+
+  const notificationPanel = document.getElementById('notification-panel');
+  if (notificationPanel) {
+    if (hasOpenDialog) {
+      notificationPanel.setAttribute('inert', '');
+    } else if (notificationPanel.classList.contains('open')) {
+      notificationPanel.removeAttribute('inert');
+    } else {
+      notificationPanel.setAttribute('inert', '');
+    }
+  }
+}
+
+function focusableElements(container) {
+  return [...container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+    .filter(element => element.getClientRects().length > 0 && !element.closest('[hidden]'));
 }
 
 function bindGlobalControls() {
@@ -100,19 +164,61 @@ function bindGlobalControls() {
     });
   });
 
+  document.querySelectorAll('[data-placement-action]').forEach(button => {
+    button.addEventListener('click', () => {
+      showToast('Sample opportunity only. Confirm application details with official sources.');
+    });
+  });
+
   document.querySelectorAll('[data-close="modal"]').forEach(trigger => {
     trigger.addEventListener('click', closeModal);
   });
 
   document.querySelector('.modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('search-overlay')?.addEventListener('click', event => {
+    if (event.target === event.currentTarget) closeSearchModal();
+  });
 
   document.addEventListener('keydown', event => {
+    if (event.key === 'Tab') {
+      const activeDialog = [
+        { overlay: document.getElementById('generic-modal'), dialog: document.querySelector('#generic-modal .modal-panel') },
+        { overlay: document.getElementById('search-overlay'), dialog: document.querySelector('#search-overlay .search-modal') }
+      ].find(item => item.overlay?.classList.contains('open') && item.dialog);
+
+      if (activeDialog) {
+        const focusable = focusableElements(activeDialog.dialog);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first) {
+          event.preventDefault();
+          activeDialog.dialog.focus();
+        } else if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        } else if (!activeDialog.dialog.contains(document.activeElement)) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
     if (event.key === 'Escape') {
       closeModal();
       closeSearchModal();
       const panel = document.getElementById('notification-panel');
-      panel?.classList.remove('open');
-      panel?.setAttribute('aria-hidden', 'true');
+      if (panel?.classList.contains('open')) {
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.setAttribute('inert', '');
+        document.querySelector('.notification-trigger')?.setAttribute('aria-expanded', 'false');
+        if (window.notificationReturnFocus instanceof HTMLElement && window.notificationReturnFocus.isConnected) {
+          window.notificationReturnFocus.focus();
+        }
+      }
     }
   });
 }
@@ -120,28 +226,55 @@ function bindGlobalControls() {
 function openModal(content) {
   const modal = document.getElementById('generic-modal');
   const panel = document.getElementById('modal-content');
+  const dialog = modal.querySelector('.modal-panel');
+  window.modalReturnFocus = document.activeElement;
   panel.innerHTML = content;
+  modal.removeAttribute('inert');
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
+  dialog.setAttribute('aria-modal', 'true');
+  updateModalBackgroundState();
+  modal.querySelector('.modal-close')?.focus();
 }
 
 function closeModal() {
   const modal = document.getElementById('generic-modal');
+  const wasOpen = modal.classList.contains('open');
+  const dialog = modal.querySelector('.modal-panel');
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
+  dialog.setAttribute('aria-modal', 'false');
+  modal.setAttribute('inert', '');
+  updateModalBackgroundState();
+  if (wasOpen && window.modalReturnFocus instanceof HTMLElement && window.modalReturnFocus.isConnected) {
+    window.modalReturnFocus.focus();
+  }
 }
 
 function openSearchModal() {
   const overlay = document.getElementById('search-overlay');
+  window.searchReturnFocus = document.activeElement;
+  overlay.removeAttribute('inert');
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden', 'false');
+  overlay.querySelector('.search-modal').setAttribute('aria-modal', 'true');
+  document.querySelector('.search-trigger')?.setAttribute('aria-expanded', 'true');
+  updateModalBackgroundState();
   document.getElementById('search-input')?.focus();
 }
 
 function closeSearchModal() {
   const overlay = document.getElementById('search-overlay');
+  const wasOpen = overlay.classList.contains('open');
   overlay.classList.remove('open');
   overlay.setAttribute('aria-hidden', 'true');
+  overlay.querySelector('.search-modal').setAttribute('aria-modal', 'false');
+  overlay.setAttribute('inert', '');
+  document.querySelector('.search-trigger')?.setAttribute('aria-expanded', 'false');
+  updateModalBackgroundState();
+  if (wasOpen && window.searchReturnFocus instanceof HTMLElement && window.searchReturnFocus.isConnected) {
+    window.searchReturnFocus.focus();
+  }
 }
 
 function openProfileDashboard() {
@@ -224,9 +357,15 @@ function renderNotificationBadge() {
   const items = Storage.get(STORAGE_KEYS.notifications, campusData.notifications);
   const unread = items.filter(item => !item.read).length;
   const badge = document.getElementById('notification-badge');
+  const trigger = document.querySelector('.notification-trigger');
   if (badge) {
     badge.textContent = unread;
     badge.style.display = unread ? 'grid' : 'none';
+  }
+  if (trigger) {
+    const isOpen = document.getElementById('notification-panel')?.classList.contains('open');
+    const action = isOpen ? 'Close' : 'Open';
+    trigger.setAttribute('aria-label', `${action} notifications${unread ? `, ${unread} unread` : ''}`);
   }
 }
 
