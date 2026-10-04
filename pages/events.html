@@ -57,16 +57,42 @@
         </nav>
       </header>
 
-      <main class="container page-main">
+      <main class="container page-main" id="events-page-main">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Events</nav>
-        <header class="page-header">
-          <span class="eyebrow">Campus life</span>
-          <h1>Campus Events</h1>
-          <p>Discover workshops, sports, cultural programs, and opportunities happening across campus.</p>
-        </header>
-        <div class="filter-row" id="event-filters"></div>
-        <div id="events-list" class="card-grid"></div>
+
+        <!-- Magic Patterns Editorial Masthead -->
+        <header class="editorial-masthead" id="events-masthead"></header>
+
+        <!-- Magic Patterns 12-Column Featured Spread -->
+        <section class="featured-spread" id="featured-spread" aria-label="Featured events"></section>
+
+        <!-- Magic Patterns Sticky Agenda & Interactive Timeline -->
+        <section class="agenda-section" id="agenda-section" aria-labelledby="agenda-heading">
+          <div class="agenda-sticky-bar" id="agenda-sticky-bar">
+            <div class="agenda-sticky-top">
+              <h2 id="agenda-heading" class="font-display">The agenda</h2>
+              <div class="agenda-count-wrap" id="agenda-count-wrap" aria-live="polite"></div>
+            </div>
+            <div class="agenda-filter-row" id="agenda-filter-row"></div>
+          </div>
+
+          <div class="date-strip-container" id="date-strip-container"></div>
+          <div class="agenda-timeline" id="agenda-timeline"></div>
+        </section>
+
+        <!-- Legacy fallback container for backwards compatibility -->
+        <div id="events-list" style="display: none;"></div>
       </main>
+
+      <!-- Magic Patterns Slide-Over Event Detail Drawer -->
+      <div class="event-drawer-overlay" id="event-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <aside class="event-drawer-panel" id="event-drawer-panel"></aside>
+      </div>
+
+      <!-- Magic Patterns My Tickets Drawer -->
+      <div class="event-drawer-overlay" id="tickets-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tickets-title">
+        <aside class="event-drawer-panel" id="tickets-drawer-panel"></aside>
+      </div>
 
       <footer class="footer container">
         <div class="footer-grid">

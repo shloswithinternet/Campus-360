@@ -28,6 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     : [];
   const unreadNotifications = Array.isArray(notifications) ? notifications.filter(n => !n.read).length : 0;
 
+  const registeredEvents = (typeof Storage !== 'undefined' && typeof STORAGE_KEYS !== 'undefined')
+    ? Storage.get(STORAGE_KEYS.registeredEvents, [])
+    : [];
+  const ticketCount = Array.isArray(registeredEvents) ? registeredEvents.length : 0;
+
   // Build the clean, streamlined navigation bar
   const nav = document.querySelector('.nav');
   if (nav) {
@@ -76,6 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="badge" id="notification-badge" style="${unreadNotifications > 0 ? '' : 'display: none;'}">${unreadNotifications}</span>
         </button>
         <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">${currentTheme === 'dark' ? '🌙' : '☀️'}</button>
+        <a href="${pagePath('pages/events.html')}#tickets" class="tickets-pill" id="tickets-button" aria-label="View registered event tickets">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+          <span>My tickets</span>
+          <span class="ticket-count" id="ticket-badge">${ticketCount}</span>
+        </a>
         <a href="${pagePath('pages/profile.html')}" class="profile-pill ${page === 'profile' ? 'active' : ''}" id="profile-button" aria-label="Open student profile">
           <span class="avatar">AS</span>
           <span>Alex</span>

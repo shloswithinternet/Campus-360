@@ -1,0 +1,5 @@
+# Dependencies & Reference
+node_modules/
+magic-patterns/
+.DS_Store
+Thumbs.db
