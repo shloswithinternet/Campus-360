@@ -14,10 +14,46 @@
   <body data-page="report">
     <div class="page-shell">
       <header class="topbar">
-        <nav class="nav container" aria-label="Main navigation">
-          <div class="nav-left"><a href="../index.html" class="brand"><span class="brand-mark">C</span><div><strong>Campus 360</strong></div></a></div>
-          <div class="nav-center"><a href="../index.html" class="nav-link" data-nav="home">Home</a><div class="nav-menu"><span class="nav-group" data-nav-group="explore">Explore</span><div class="nav-menu-items"><a href="news.html" data-nav="news">News</a><a href="blogs.html" data-nav="blogs">Blogs</a><a href="clubs.html" data-nav="clubs">Clubs</a><a href="departments.html" data-nav="departments">Departments</a><a href="facilities.html" data-nav="facilities">Facilities</a><a href="calendar.html" data-nav="calendar">Calendar</a><a href="timetable.html" data-nav="timetable">Timetable</a><a href="placement.html" data-nav="placement">Placement</a></div></div><a href="events.html" class="nav-link" data-nav="events">Events</a><a href="announcements.html" class="nav-link" data-nav="announcements">Announcements</a><a href="campus-map.html" class="nav-link" data-nav="campus-map">Campus Map</a><a href="canteen.html" class="nav-link" data-nav="canteen">Canteen</a><a href="library.html" class="nav-link" data-nav="library">Library</a><div class="nav-menu"><span class="nav-group" data-nav-group="services">Services</span><div class="nav-menu-items"><a href="lost-found.html" data-nav="lost-found">Lost &amp; Found</a><a href="report.html" data-nav="report">Report Issue</a><a href="feedback.html" data-nav="feedback">Feedback</a><a href="campus-help.html" data-nav="campus-help">Campus Help</a></div></div><a href="dashboard.html" class="nav-link" data-nav="dashboard">Dashboard</a><a href="profile.html" class="nav-link" data-nav="profile">Profile</a></div>
-          <div class="nav-right"><button class="icon-btn search-trigger" aria-label="Open search">⌕</button><button class="icon-btn notification-trigger" aria-label="Open notifications">🔔<span class="badge" id="notification-badge">3</span></button><button class="icon-btn theme-toggle" aria-label="Toggle dark mode">☀️</button><a href="profile.html" class="profile-pill"><span class="avatar">AS</span><span>Alex</span></a></div>
+                <nav class="nav container" aria-label="Main navigation">
+          <div class="nav-left">
+            <a href="../index.html" class="brand" aria-label="Campus 360 home">
+              <span class="brand-mark">C</span>
+              <div><strong>Campus 360</strong></div>
+            </a>
+          </div>
+          <div class="nav-center">
+            <a href="../index.html" class="nav-link" data-nav="home">Home</a>
+            <div class="nav-menu" data-menu="events">
+              <a href="events.html" class="nav-link nav-group" data-nav="events" aria-haspopup="true" aria-expanded="false">Events</a>
+              <div class="nav-menu-items" role="menu" aria-label="Events sub-menu">
+                <a href="events.html" role="menuitem">All Events</a>
+                <a href="events.html?category=technical" role="menuitem">Technical Events</a>
+                <a href="events.html?category=cultural" role="menuitem">Cultural Events</a>
+                <a href="events.html?category=sports" role="menuitem">Sports &amp; Athletics</a>
+                <a href="events.html?category=workshop" role="menuitem">Workshops</a>
+                <a href="events.html?category=placement" role="menuitem">Bootcamps</a>
+              </div>
+            </div>
+            <div class="nav-menu" data-menu="services">
+              <a href="services.html" class="nav-link nav-group" data-nav="services" aria-haspopup="true" aria-expanded="false">Services</a>
+              <div class="nav-menu-items" role="menu" aria-label="Services sub-menu">
+                <a href="services.html" role="menuitem">Services Overview</a>
+                <a href="lost-found.html" role="menuitem">Lost &amp; Found</a>
+                <a href="report.html" role="menuitem">Report an Issue</a>
+                <a href="feedback.html" role="menuitem">Feedback</a>
+                <a href="campus-help.html" role="menuitem">Campus Help Desk</a>
+              </div>
+            </div>
+            <a href="announcements.html" class="nav-link" data-nav="announcements">Announcements</a>
+            <a href="campus-map.html" class="nav-link" data-nav="campus-map">Campus Map</a>
+          </div>
+          <div class="nav-right">
+            <button class="icon-btn search-trigger" type="button" aria-label="Open search">⌕</button>
+            <button class="icon-btn notification-trigger" type="button" aria-label="Open notifications">🔔<span class="badge" id="notification-badge">3</span></button>
+            <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">☀️</button>
+            <a href="profile.html" class="profile-pill" id="profile-button" aria-label="Open profile dashboard"><span class="avatar">AS</span><span>Alex</span></a>
+            <button class="more-menu-trigger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="global-sidebar">⋮</button>
+          </div>
         </nav>
       </header>
 

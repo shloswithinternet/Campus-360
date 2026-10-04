@@ -20,43 +20,51 @@ function renderLostFound() {
     </article>
   `).join('') : '<div class="empty-state">No lost or found items match your search.</div>';
 
-  document.getElementById('lost-form')?.addEventListener('submit', event => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const entry = {
-      id: `lost-${Date.now()}`,
-      itemName: formData.get('itemName'),
-      category: formData.get('category'),
-      description: formData.get('description'),
-      location: formData.get('location'),
-      date: new Date().toISOString().slice(0, 10),
-      status: 'Lost',
-      contact: formData.get('contact')
-    };
-    const current = Storage.get(STORAGE_KEYS.lostFoundEntries, campusData.lostFound);
-    Storage.set(STORAGE_KEYS.lostFoundEntries, [entry, ...current]);
-    renderLostFound();
-    event.target.reset();
-    showToast('Lost item reported successfully.');
-  });
+  const lostForm = document.getElementById('lost-form');
+  if (lostForm && !lostForm.dataset.bound) {
+    lostForm.dataset.bound = 'true';
+    lostForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const entry = {
+        id: `lost-${Date.now()}`,
+        itemName: formData.get('itemName'),
+        category: formData.get('category'),
+        description: formData.get('description'),
+        location: formData.get('location'),
+        date: new Date().toISOString().slice(0, 10),
+        status: 'Lost',
+        contact: formData.get('contact')
+      };
+      const current = Storage.get(STORAGE_KEYS.lostFoundEntries, campusData.lostFound);
+      Storage.set(STORAGE_KEYS.lostFoundEntries, [entry, ...current]);
+      renderLostFound();
+      event.target.reset();
+      showToast('Lost item reported successfully.');
+    });
+  }
 
-  document.getElementById('found-form')?.addEventListener('submit', event => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const entry = {
-      id: `found-${Date.now()}`,
-      itemName: formData.get('itemName'),
-      category: formData.get('category'),
-      description: formData.get('description'),
-      location: formData.get('location'),
-      date: new Date().toISOString().slice(0, 10),
-      status: 'Found',
-      contact: formData.get('contact')
-    };
-    const current = Storage.get(STORAGE_KEYS.lostFoundEntries, campusData.lostFound);
-    Storage.set(STORAGE_KEYS.lostFoundEntries, [entry, ...current]);
-    renderLostFound();
-    event.target.reset();
-    showToast('Found item reported successfully.');
-  });
+  const foundForm = document.getElementById('found-form');
+  if (foundForm && !foundForm.dataset.bound) {
+    foundForm.dataset.bound = 'true';
+    foundForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const entry = {
+        id: `found-${Date.now()}`,
+        itemName: formData.get('itemName'),
+        category: formData.get('category'),
+        description: formData.get('description'),
+        location: formData.get('location'),
+        date: new Date().toISOString().slice(0, 10),
+        status: 'Found',
+        contact: formData.get('contact')
+      };
+      const current = Storage.get(STORAGE_KEYS.lostFoundEntries, campusData.lostFound);
+      Storage.set(STORAGE_KEYS.lostFoundEntries, [entry, ...current]);
+      renderLostFound();
+      event.target.reset();
+      showToast('Found item reported successfully.');
+    });
+  }
 }

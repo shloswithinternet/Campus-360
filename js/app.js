@@ -27,22 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function applyTheme(theme = Storage.getTheme()) {
   const isDark = theme === 'dark';
   document.body.classList.toggle('dark', isDark);
-  const toggle = document.querySelector('.theme-toggle');
-  if (toggle) {
+  document.querySelectorAll('.theme-toggle').forEach(toggle => {
     toggle.textContent = isDark ? '🌙' : '☀️';
-  }
+  });
   Storage.setTheme(theme);
 }
 
 function bindGlobalControls() {
-  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
-    const nextTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
-    applyTheme(nextTheme);
-    showToast(`Switched to ${nextTheme} mode.`);
-  });
-
-  document.querySelector('.search-trigger')?.addEventListener('click', openSearchModal);
-  document.querySelector('.search-close')?.addEventListener('click', closeSearchModal);
   document.getElementById('hero-search')?.addEventListener('focus', openSearchModal);
   document.getElementById('hero-search')?.addEventListener('input', (event) => {
     const term = event.target.value.trim();
@@ -56,15 +47,6 @@ function bindGlobalControls() {
     renderNotificationBadge();
     showToast('All notifications marked as read.');
   });
-
-  document.querySelector('.notification-trigger')?.addEventListener('click', () => {
-    const panel = document.getElementById('notification-panel');
-    const isOpen = panel.classList.contains('open');
-    panel.classList.toggle('open', !isOpen);
-    panel.setAttribute('aria-hidden', String(!isOpen));
-  });
-
-  document.getElementById('profile-button')?.addEventListener('click', openProfileDashboard);
 
   document.querySelectorAll('.quick-card').forEach(button => {
     button.addEventListener('click', () => {

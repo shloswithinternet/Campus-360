@@ -48,6 +48,20 @@ function renderSearchResults(term = '') {
     return haystack.includes(q);
   });
 
+  const isNested = window.location.pathname.includes('/pages/');
+  const getPageUrl = (kind) => {
+    const pageMap = {
+      event: 'events.html',
+      announcement: 'announcements.html',
+      news: 'news.html',
+      book: 'library.html',
+      club: 'clubs.html',
+      facility: 'facilities.html'
+    };
+    const file = pageMap[kind] || 'index.html';
+    return isNested ? file : `pages/${file}`;
+  };
+
   results.innerHTML = filtered.length
     ? filtered.slice(0, 8).map(item => `
       <div class="search-result">
@@ -55,7 +69,7 @@ function renderSearchResults(term = '') {
           <strong>${item.title || item.name || item.itemName}</strong>
           <div class="meta-line"><span>${item.category}</span><span>•</span><span>${item.location || item.venue || item.department || item.date || 'Campus'}</span></div>
         </div>
-        <button class="chip">Open</button>
+        <a href="${getPageUrl(item.kind)}" class="chip">Open →</a>
       </div>
     `).join('')
     : '<div class="empty-state">No results found for your search.</div>';

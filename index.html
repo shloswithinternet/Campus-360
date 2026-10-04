@@ -32,49 +32,44 @@
           </div>
 
           <div class="nav-center">
-            <a href="index.html" class="nav-link" data-nav="home">Home</a>
-            <div class="nav-menu">
-              <span class="nav-group" data-nav-group="explore">Explore</span>
-              <div class="nav-menu-items">
-                <a href="pages/news.html" data-nav="news">News</a>
-                <a href="pages/blogs.html" data-nav="blogs">Blogs</a>
-                <a href="pages/clubs.html" data-nav="clubs">Clubs</a>
-                <a href="pages/departments.html" data-nav="departments">Departments</a>
-                <a href="pages/facilities.html" data-nav="facilities">Facilities</a>
-                <a href="pages/calendar.html" data-nav="calendar">Calendar</a>
-                <a href="pages/timetable.html" data-nav="timetable">Timetable</a>
-                <a href="pages/placement.html" data-nav="placement">Placement</a>
+            <a href="index.html" class="nav-link active" data-nav="home">Home</a>
+            <div class="nav-menu" data-menu="events">
+              <a href="pages/events.html" class="nav-link nav-group" data-nav="events" aria-haspopup="true" aria-expanded="false">Events</a>
+              <div class="nav-menu-items" role="menu" aria-label="Events sub-menu">
+                <a href="pages/events.html" role="menuitem">All Events</a>
+                <a href="pages/events.html?category=technical" role="menuitem">Technical Events</a>
+                <a href="pages/events.html?category=cultural" role="menuitem">Cultural Events</a>
+                <a href="pages/events.html?category=sports" role="menuitem">Sports &amp; Athletics</a>
+                <a href="pages/events.html?category=workshop" role="menuitem">Workshops</a>
+                <a href="pages/events.html?category=placement" role="menuitem">Bootcamps</a>
               </div>
             </div>
-            <a href="pages/events.html" class="nav-link" data-nav="events">Events</a>
+            <div class="nav-menu" data-menu="services">
+              <a href="pages/services.html" class="nav-link nav-group" data-nav="services" aria-haspopup="true" aria-expanded="false">Services</a>
+              <div class="nav-menu-items" role="menu" aria-label="Services sub-menu">
+                <a href="pages/services.html" role="menuitem">Services Overview</a>
+                <a href="pages/lost-found.html" role="menuitem">Lost &amp; Found</a>
+                <a href="pages/report.html" role="menuitem">Report an Issue</a>
+                <a href="pages/feedback.html" role="menuitem">Feedback</a>
+                <a href="pages/campus-help.html" role="menuitem">Campus Help Desk</a>
+              </div>
+            </div>
             <a href="pages/announcements.html" class="nav-link" data-nav="announcements">Announcements</a>
             <a href="pages/campus-map.html" class="nav-link" data-nav="campus-map">Campus Map</a>
-            <a href="pages/canteen.html" class="nav-link" data-nav="canteen">Canteen</a>
-            <a href="pages/library.html" class="nav-link" data-nav="library">Library</a>
-            <div class="nav-menu">
-              <span class="nav-group" data-nav-group="services">Services</span>
-              <div class="nav-menu-items">
-                <a href="pages/lost-found.html" data-nav="lost-found">Lost &amp; Found</a>
-                <a href="pages/report.html" data-nav="report">Report Issue</a>
-                <a href="pages/feedback.html" data-nav="feedback">Feedback</a>
-                <a href="pages/campus-help.html" data-nav="campus-help">Campus Help</a>
-              </div>
-            </div>
-            <a href="pages/dashboard.html" class="nav-link" data-nav="dashboard">Dashboard</a>
-            <a href="pages/profile.html" class="nav-link" data-nav="profile">Profile</a>
           </div>
 
           <div class="nav-right">
-            <button class="icon-btn search-trigger" aria-label="Open search">⌕</button>
-            <button class="icon-btn notification-trigger" aria-label="Open notifications">
+            <button class="icon-btn search-trigger" type="button" aria-label="Open search">⌕</button>
+            <button class="icon-btn notification-trigger" type="button" aria-label="Open notifications">
               🔔
               <span class="badge" id="notification-badge">3</span>
             </button>
-            <button class="icon-btn theme-toggle" aria-label="Toggle dark mode">☀️</button>
+            <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">☀️</button>
             <a href="pages/profile.html" class="profile-pill" id="profile-button" aria-label="Open profile dashboard">
               <span class="avatar">AS</span>
               <span>Alex</span>
             </a>
+            <button class="more-menu-trigger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="global-sidebar">⋮</button>
           </div>
         </nav>
       </header>

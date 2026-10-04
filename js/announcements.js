@@ -22,11 +22,22 @@ function renderAnnouncements() {
   renderAnnouncementsList('All');
 }
 
+function getAnnouncementsData() {
+  const readIds = (typeof Storage !== 'undefined' && typeof STORAGE_KEYS !== 'undefined')
+    ? Storage.get(STORAGE_KEYS.readAnnouncements, [])
+    : [];
+  return campusData.announcements.map(item => ({
+    ...item,
+    read: item.read || readIds.includes(item.id)
+  }));
+}
+
 function renderAnnouncementsList(selectedCategory = 'All') {
   const list = document.getElementById('announcements-list');
+  const allRecords = getAnnouncementsData();
   const records = selectedCategory === 'All'
-    ? campusData.announcements
-    : campusData.announcements.filter(announcement => announcement.category === selectedCategory);
+    ? allRecords
+    : allRecords.filter(announcement => announcement.category === selectedCategory);
 
   list.innerHTML = records.length ? records.map(item => `
     <article class="announcement priority-${item.priority.toLowerCase().replace(' ', '-')}">
@@ -41,7 +52,7 @@ function renderAnnouncementsList(selectedCategory = 'All') {
       <div class="card-actions">
         <span>${item.department}</span>
         <div>
-          <button class="link-btn mark-read-btn" data-id="${item.id}">${item.read ? 'Read' : 'Mark as read'}</button>
+          <button class="link-btn mark-read-btn" data-id="${item.id}">${item.read ? 'Read ✓' : 'Mark as read'}</button>
           <button class="link-btn announcement-open" data-id="${item.id}">Open</button>
         </div>
       </div>
@@ -51,8 +62,13 @@ function renderAnnouncementsList(selectedCategory = 'All') {
   list.querySelectorAll('.mark-read-btn').forEach(button => {
     button.addEventListener('click', () => {
       const id = button.dataset.id;
-      const items = campusData.announcements.map(item => item.id === id ? { ...item, read: true } : item);
-      campusData.announcements = items;
+      if (typeof Storage !== 'undefined' && typeof STORAGE_KEYS !== 'undefined') {
+        const readIds = Storage.get(STORAGE_KEYS.readAnnouncements, []);
+        if (!readIds.includes(id)) {
+          Storage.set(STORAGE_KEYS.readAnnouncements, [...readIds, id]);
+        }
+      }
+      campusData.announcements = campusData.announcements.map(item => item.id === id ? { ...item, read: true } : item);
       renderAnnouncements();
       renderNotificationBadge();
       showToast('Announcement marked as read.');

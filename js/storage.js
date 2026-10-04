@@ -9,7 +9,8 @@ const STORAGE_KEYS = {
   cart: 'campus360-cart',
   orders: 'campus360-orders',
   memberships: 'campus360-memberships',
-  profilePreferences: 'campus360-profile-preferences'
+  profilePreferences: 'campus360-profile-preferences',
+  readAnnouncements: 'campus360-read-announcements'
 };
 
 const Storage = {

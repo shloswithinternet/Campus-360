@@ -31,24 +31,27 @@ function renderReports() {
     </article>
   `).join('') : '<div class="empty-state">No reports submitted yet.</div>';
 
-  issueForm.addEventListener('submit', event => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const reportId = `C360-RP-${Math.floor(1000 + Math.random() * 9000)}`;
-    const report = {
-      id: reportId,
-      category: formData.get('category'),
-      location: formData.get('location'),
-      description: formData.get('description'),
-      urgency: formData.get('urgency'),
-      contact: formData.get('contact'),
-      status: 'Submitted'
-    };
+  if (!issueForm.dataset.bound) {
+    issueForm.dataset.bound = 'true';
+    issueForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const reportId = `C360-RP-${Math.floor(1000 + Math.random() * 9000)}`;
+      const report = {
+        id: reportId,
+        category: formData.get('category'),
+        location: formData.get('location'),
+        description: formData.get('description'),
+        urgency: formData.get('urgency'),
+        contact: formData.get('contact'),
+        status: 'Submitted'
+      };
 
-    const current = Storage.get(STORAGE_KEYS.reports, []);
-    Storage.set(STORAGE_KEYS.reports, [report, ...current]);
-    event.target.reset();
-    renderReports();
-    showToast(`Report ${reportId} submitted successfully.`);
-  });
+      const current = Storage.get(STORAGE_KEYS.reports, []);
+      Storage.set(STORAGE_KEYS.reports, [report, ...current]);
+      event.target.reset();
+      renderReports();
+      showToast(`Report ${reportId} submitted successfully.`);
+    });
+  }
 }
