@@ -40,7 +40,7 @@ function renderAnnouncementsList(selectedCategory = 'All') {
     : allRecords.filter(announcement => announcement.category === selectedCategory);
 
   list.innerHTML = records.length ? records.map(item => `
-    <article class="announcement priority-${item.priority.toLowerCase().replace(' ', '-')}">
+    <article class="announcement priority-${item.priority.toLowerCase().replace(' ', '-')} ${item.read ? 'is-read' : 'is-unread'}">
       <div class="meta-line">
         <span class="badge-pill ${item.priority === 'Urgent' ? 'danger' : item.priority === 'Important' ? 'warning' : 'success'}">${item.priority}</span>
         <span>${item.category}</span>
@@ -50,9 +50,9 @@ function renderAnnouncementsList(selectedCategory = 'All') {
       <h3>${item.title}</h3>
       <p>${item.description}</p>
       <div class="card-actions">
-        <span>${item.department}</span>
+        <span>${item.read ? 'Read' : 'Unread'} · ${item.department}</span>
         <div>
-          <button class="link-btn mark-read-btn" data-id="${item.id}">${item.read ? 'Read ✓' : 'Mark as read'}</button>
+          ${item.read ? '' : `<button class="link-btn mark-read-btn" data-id="${item.id}">Mark as read</button>`}
           <button class="link-btn announcement-open" data-id="${item.id}">Open</button>
         </div>
       </div>

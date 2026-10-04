@@ -35,19 +35,24 @@ This project simulates a modern campus platform for an institute such as APSIT, 
 ## Project Structure
 
 - `index.html` — main entry point
-- `css/style.css` — core visual system and component styles
-- `css/responsive.css` — mobile and tablet responsiveness
+- `css/style.css` — base layout and Events editorial styles
+- `css/components.css` — shared Campus 360 tokens, controls, and reusable component/page patterns
+- `css/responsive.css` — tablet and mobile layout adjustments
 - `js/data.js` — mock campus datasets
 - `js/storage.js` — LocalStorage abstraction
 - `js/*.js` — modular feature scripts for search, events, map, canteen, library, reports, feedback and more
 
+## Design system and page patterns
+
+The Events page is the visual reference: warm paper and ink surfaces, restrained terracotta accents, Instrument Serif display headings, Inter interface text, fine rules, compact labels, and low-emphasis borders. Shared tokens and components live in `css/components.css`; breakpoints and layout changes live in `css/responsive.css`.
+
+Page layouts follow their content rather than reusing one card grid: announcements use a compact priority/read-state register; News and Blogs use a lead story with an editorial list; Library combines search, category and availability filters with a resource list; Canteen pairs categorized menu rows with an order summary; the Map prioritizes location search and routes; Dashboard surfaces personal metrics and important updates; and Profile and support pages prioritize preferences, forms, and submission/report status.
+
 ## How to Run
 
-1. Open the project folder in a browser or serve it from a local static server.
-2. You can also run:
+From the repository root, open the project folder in a browser or serve it locally:
 
 ```bash
-cd "c:/Users/shlok/Campus 360"
 python -m http.server 8000
 ```
 
@@ -68,13 +73,14 @@ Then open `http://localhost:8000` in the browser.
 The site stores demo user state such as:
 
 - Theme preference
+- Profile preferences
 - Registering events
 - Cart and orders
 - Notifications read state
 - Club memberships
 - Lost/found entries
 - Issue reports
-- Feedback entries
+- Feedback entries and recent submission status
 - Saved blog drafts
 
 ## Screenshots

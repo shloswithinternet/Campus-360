@@ -51,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="${pagePath('pages/events.html')}" class="nav-link nav-group ${page === 'events' ? 'active' : ''}" data-nav="events" aria-haspopup="true" aria-expanded="false">Events</a>
           <div class="nav-menu-items" role="menu" aria-label="Events sub-menu">
             <a href="${pagePath('pages/events.html')}" role="menuitem">All Events</a>
-            <a href="${pagePath('pages/events.html')}?category=technical" role="menuitem">Technical Events</a>
-            <a href="${pagePath('pages/events.html')}?category=cultural" role="menuitem">Cultural Events</a>
-            <a href="${pagePath('pages/events.html')}?category=sports" role="menuitem">Sports &amp; Athletics</a>
-            <a href="${pagePath('pages/events.html')}?category=workshop" role="menuitem">Workshops</a>
-            <a href="${pagePath('pages/events.html')}?category=placement" role="menuitem">Bootcamps</a>
+              <a href="${pagePath('pages/events.html')}?category=Lectures" role="menuitem">Lectures</a>
+              <a href="${pagePath('pages/events.html')}?category=Arts" role="menuitem">Arts &amp; Culture</a>
+              <a href="${pagePath('pages/events.html')}?category=Music" role="menuitem">Music</a>
+              <a href="${pagePath('pages/events.html')}?category=Sport" role="menuitem">Sport</a>
+              <a href="${pagePath('pages/events.html')}?category=Tech" role="menuitem">Technology</a>
+              <a href="${pagePath('pages/events.html')}?category=Careers" role="menuitem">Careers</a>
+              <a href="${pagePath('pages/events.html')}?category=Community" role="menuitem">Community</a>
           </div>
         </div>
 

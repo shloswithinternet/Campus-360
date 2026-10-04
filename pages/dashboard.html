@@ -61,10 +61,17 @@
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Dashboard</nav>
         <header class="page-header"><span class="eyebrow">Personal overview</span><h1>My Campus Dashboard</h1><p>Track your registrations, announcements, saved content, and upcoming campus activities in one place.</p></header>
         <div id="stats-grid" class="stats-grid"></div>
-        <div class="two-col mt-24">
+        <div class="dashboard-grid">
           <div class="panel-card">
             <h3>Today at a glance</h3>
             <div id="today-list" class="timeline-list"></div>
+            <section class="dashboard-updates" aria-labelledby="dashboard-updates-heading">
+              <div class="section-head with-actions">
+                <h3 id="dashboard-updates-heading">Important updates</h3>
+                <a class="link-btn" href="announcements.html">All announcements</a>
+              </div>
+              <div id="dashboard-announcements" class="stack-list"></div>
+            </section>
           </div>
           <div class="panel-card">
             <h3>Quick actions</h3>

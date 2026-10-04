@@ -63,4 +63,25 @@ function renderProfile() {
   if (profileButton) {
     profileButton.innerHTML = '<span class="avatar">AS</span><span>Alex</span>';
   }
+
+  const form = document.getElementById('profile-preferences-form');
+  if (!form) return;
+
+  const preferences = Storage.get(STORAGE_KEYS.profilePreferences, {});
+  form.elements.namedItem('librarySlot').value = preferences.librarySlot || '4:00 PM - 6:00 PM';
+  form.elements.namedItem('canteen').value = preferences.canteen || 'Main Canteen';
+  form.elements.namedItem('theme').value = Storage.getTheme();
+
+  if (form.dataset.bound) return;
+  form.dataset.bound = 'true';
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    Storage.set(STORAGE_KEYS.profilePreferences, {
+      librarySlot: formData.get('librarySlot'),
+      canteen: formData.get('canteen')
+    });
+    applyTheme(String(formData.get('theme')));
+    showToast('Your profile preferences have been saved.');
+  });
 }
